@@ -6,4 +6,15 @@ class RatingModel extends Database
     {
         return $this->select("SELECT * FROM ratings ORDER BY id ASC LIMIT ?", ["i", $limit]);
     }
+
+    public function getRatingById($ratingId)
+    {
+        $query = "SELECT * FROM ratings WHERE id = ?";
+        $stmt = mysqli_prepare($this->connection, $query);
+        mysqli_stmt_bind_param($stmt, "i", $ratingId);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $rating = mysqli_fetch_assoc($result);
+        return $rating;
+    }
 }
