@@ -26,7 +26,7 @@ class UserController extends BaseController
             $strErrorDesc = 'Method not supported';
             $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
         }
-        // send output 
+        // send output 10
         if (!$strErrorDesc) {
             $this->sendOutput(
                 $responseData,
@@ -45,25 +45,6 @@ class UserController extends BaseController
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
         $arrQueryStringParams = $this->getQueryStringParams();
-
-        // Get username and passwords from the URL query parameters
-        /*$username = $_GET['username'] ?? '';
-        $password = $_GET['password'] ?? '';
-        $confirm_password = $_GET['confirm_password'] ?? '';
-
-        if (strtoupper($requestMethod) == 'GET') {
-            $userModel = new UserModel();
-            $userExists = $userModel->isUserRegistered($username);
-
-            // Perform similar validation and registration logic as shown in the previous examples...
-        } else {
-            $strErrorDesc = 'Method not supported';
-            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
-        }*/
-
-        /*$username = $_POST['username'];
-        $password = $_POST['password'];
-        $confirm_password = $_POST['confirm_password'];*/
 
         if (strtoupper($requestMethod) == 'POST') {
             $postData = json_decode(file_get_contents('php://input'), true);
@@ -128,5 +109,56 @@ class UserController extends BaseController
         }
     }
 
+    public function loginAction() {
+        session_start();  // Start the session
     
+        $strErrorDesc = '';
+        $strErrorHeader = 'HTTP/1.1 400 Bad Request';
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+    
+        if (strtoupper($requestMethod) == 'POST') {
+            $postData = json_decode(file_get_contents('php://input'), true);
+            $userModel = new UserModel();
+    
+            if ($postData !== null) {
+                $username = $postData['username'] ?? '';
+                $password = $postData['password'] ?? '';
+    
+                $userData = $userModel->getUser($username);
+    
+                if ($userData) {
+                    $salted_password = $password . $userData['salt'];
+                    if (password_verify($salted_password, $userData['pass'])) {
+                        // User is authenticated
+                        $_SESSION['authenticated'] = true;
+                        $_SESSION['username'] = $username;
+                        $responseData = json_encode(['message' => 'Login successful']);
+                    } else {
+                        $strErrorDesc = 'Invalid credentials';
+                    }
+                } else {
+                    $strErrorDesc = 'User does not exist';
+                }
+            } else {
+                $strErrorDesc = 'Invalid request body';
+            }
+        } else {
+            $strErrorDesc = 'Method not supported';
+            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+        }
+    
+        // Respond with appropriate status and message
+        if (!$strErrorDesc) {
+            $this->sendOutput(
+                $responseData,
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
+        } else {
+            $this->sendOutput(
+                json_encode(array('error' => $strErrorDesc)), 
+                array('Content-Type: application/json', $strErrorHeader)
+            );
+        }
+    }
+
 }

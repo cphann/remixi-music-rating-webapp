@@ -46,20 +46,17 @@ class UserModel extends Database
         
         $result = mysqli_stmt_execute($insert_stmt);
         return $result;
+    }
 
-        /*$insert_query = "INSERT INTO users (username, pass, salt) VALUES (?, ?, ?)";
-        $params = ['sss', $username, $hashed_password, $salt];*/
+    public function getUser($username) {
+        $query = "SELECT * FROM users WHERE username = ?";
+        $stmt = mysqli_prepare($this->connection, $query);
+        mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_execute($stmt);
 
-        // Execute the database insert operation
-        /*try {
-            $this->executeStatement($insert_query, $params);
-            // Return true to indicate successful registration
-            return true;
-        } catch (Exception $e) {
-            // Handle any database errors and return false to indicate registration failure
-            return false;
-        }    
-    }*/
+        $result = mysqli_stmt_get_result($stmt);
+        $user = mysqli_fetch_assoc($result);
 
+        return $user;
     }
 }
