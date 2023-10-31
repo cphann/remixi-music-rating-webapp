@@ -17,4 +17,13 @@ class RatingModel extends Database
         $rating = mysqli_fetch_assoc($result);
         return $rating;
     }
+
+    public function addRating($username, $artist, $song, $rating) {
+        $query = "INSERT INTO ratings (username, artist, song, rating) VALUES (?, ?, ?, ?)";
+        $stmt = mysqli_prepare($this->connection, $query);
+        mysqli_stmt_bind_param($stmt, "sssi", $username, $artist, $song, $rating);
+        mysqli_stmt_execute($stmt);
+        return mysqli_stmt_affected_rows($stmt) > 0;
+    }
+    
 }

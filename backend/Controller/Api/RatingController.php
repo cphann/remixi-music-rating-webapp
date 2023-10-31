@@ -64,5 +64,31 @@ class RatingController extends BaseController
         } else {
             $this->sendOutput(json_encode(['error' => 'Rating not found']), ['Content-Type: application/json', 'HTTP/1.1 404 Not Found']);
         }
+    }
+
+    public function addRatingAction() {
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+    
+        // Check if the request method is POST
+        if (strtoupper($requestMethod) !== 'POST') {
+            $this->sendOutput(json_encode(['error' => 'Method not supported']), ['Content-Type: application/json', 'HTTP/1.1 405 Method Not Allowed']);
+            return;
+        }
+    
+        $postData = json_decode(file_get_contents('php://input'), true);
+    
+        if (!isset($postData['username']) || !isset($postData['artist']) || !isset($postData['song']) || !isset($postData['rating'])) {
+            $this->sendOutput(json_encode(['error' => 'Missing required fields']), ['Content-Type: application/json', 'HTTP/1.1 400 Bad Request']);
+            return;
+        }
+    
+        $ratingModel = new RatingModel();
+        $success = $ratingModel->addRating($postData['username'], $postData['artist'], $postData['song'], $postData['rating']);
+    
+        if ($success) {
+            $this->sendOutput(json_encode(['message' => 'Rating added successfully']), ['Content-Type: application/json', 'HTTP/1.1 201 Created']);
+        } else {
+            $this->sendOutput(json_encode(['error' => 'Failed to add rating']), ['Content-Type: application/json', 'HTTP/1.1 500 Internal Server Error']);
         }
     }
+}
