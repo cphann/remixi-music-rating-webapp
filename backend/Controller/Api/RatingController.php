@@ -38,4 +38,31 @@ class RatingController extends BaseController
             );
         }
     }
-}
+
+    public function viewAction()
+    {
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+
+        // Check if the request method is GET
+        if (strtoupper($requestMethod) !== 'GET') {
+            $this->sendOutput(json_encode(['error' => 'Method not supported']), ['Content-Type: application/json', 'HTTP/1.1 405 Method Not Allowed']);
+            return;
+        }
+
+        $ratingId = $_GET['id'] ?? null;
+
+        if (!$ratingId) {
+            $this->sendOutput(json_encode(['error' => 'Missing rating ID']), ['Content-Type: application/json', 'HTTP/1.1 400 Bad Request']);
+            return;
+        }
+
+        $ratingModel = new RatingModel();
+        $rating = $ratingModel->getRatingById($ratingId);
+
+        if ($rating) {
+            $this->sendOutput(json_encode($rating), ['Content-Type: application/json', 'HTTP/1.1 200 OK']);
+        } else {
+            $this->sendOutput(json_encode(['error' => 'Rating not found']), ['Content-Type: application/json', 'HTTP/1.1 404 Not Found']);
+        }
+        }
+    }
