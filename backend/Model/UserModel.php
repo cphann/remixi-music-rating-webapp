@@ -30,11 +30,22 @@ class UserModel extends Database
 
     public function registerUser($username, $hashed_password, $salt)
     {
+        // $insert_query = "INSERT INTO users (username, pass, salt) VALUES (?, ?, ?)";
+        // $insert_stmt = mysqli_prepare($this->connection, $insert_query);
+        // mysqli_stmt_bind_param($insert_stmt, "sss", $username, $hashed_password, $salt);
+        // mysqli_stmt_execute($insert_stmt);
+
         $insert_query = "INSERT INTO users (username, pass, salt) VALUES (?, ?, ?)";
-        $insert_stmt = mysqli_prepare($conn, $insert_query);
+        $insert_stmt = mysqli_prepare($this->connection, $insert_query);  // Use $this->connection instead of $conn
+    
+        if($insert_stmt === false) {
+            return false;  // Statement preparation failed
+        }
+    
         mysqli_stmt_bind_param($insert_stmt, "sss", $username, $hashed_password, $salt);
-        mysqli_stmt_execute($insert_stmt);
-        return true;
+        
+        $result = mysqli_stmt_execute($insert_stmt);
+        return $result;
 
         /*$insert_query = "INSERT INTO users (username, pass, salt) VALUES (?, ?, ?)";
         $params = ['sss', $username, $hashed_password, $salt];*/
@@ -50,4 +61,5 @@ class UserModel extends Database
         }    
     }*/
 
+    }
 }

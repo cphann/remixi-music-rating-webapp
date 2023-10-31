@@ -42,7 +42,7 @@ class UserController extends BaseController
     public function registerAction()
     {
 
-       $strErrorDesc = '';
+        $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
         $arrQueryStringParams = $this->getQueryStringParams();
 
@@ -67,14 +67,14 @@ class UserController extends BaseController
 
         if (strtoupper($requestMethod) == 'POST') {
             $postData = json_decode(file_get_contents('php://input'), true);
-            $userModel = new UserModel();
-            $userExists = $userModel->isUserRegistered($username);
-        
+            $userModel = new UserModel();  
+            $userExists = false;      
             // Check if the data was sent as JSON and properly decoded
             if ($postData !== null) {
                 $username = $postData['username'] ?? '';
                 $password = $postData['password'] ?? '';
                 $confirm_password = $postData['confirm_password'] ?? '';
+                $userExists = $userModel->isUserRegistered($username);
             } else {
                 // If JSON decoding fails or the data is not in the expected format
                 // Handle the situation, set error descriptions, response codes, etc.
