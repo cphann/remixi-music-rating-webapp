@@ -28,25 +28,35 @@ class UserModel extends Database
         return count($result) > 0;
     }
 
-    public function registerUser($userData)
+    public function registerUser($username, $hashed_password, $salt)
     {
         // $insert_query = "INSERT INTO users (username, pass, salt) VALUES (?, ?, ?)";
-        // $insert_stmt = mysqli_prepare($conn, $insert_query);
+        // $insert_stmt = mysqli_prepare($this->connection, $insert_query);
         // mysqli_stmt_bind_param($insert_stmt, "sss", $username, $hashed_password, $salt);
         // mysqli_stmt_execute($insert_stmt);
 
         $insert_query = "INSERT INTO users (username, pass, salt) VALUES (?, ?, ?)";
-        $params = ['sss', $username, $hashed_password, $salt];
-
-        // Execute the database insert operation
-        try {
-            $this->executeStatement($insert_query, $params);
-            // Return true to indicate successful registration
-            return true;
-        } catch (Exception $e) {
-            // Handle any database errors and return false to indicate registration failure
-            return false;
-        }    
+        $insert_stmt = mysqli_prepare($this->connection, $insert_query);  // Use $this->connection instead of $conn
+    
+        if($insert_stmt === false) {
+            return false;  // Statement preparation failed
+        }
+    
+        mysqli_stmt_bind_param($insert_stmt, "sss", $username, $hashed_password, $salt);
+        
+        $result = mysqli_stmt_execute($insert_stmt);
+        return $result;
     }
 
+    public function getUser($username) {
+        $query = "SELECT * FROM users WHERE username = ?";
+        $stmt = mysqli_prepare($this->connection, $query);
+        mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+        $user = mysqli_fetch_assoc($result);
+
+        return $user;
+    }
 }
