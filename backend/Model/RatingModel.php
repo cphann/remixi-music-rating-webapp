@@ -38,7 +38,7 @@ class RatingModel extends Database
     public function updateRating($ratingId, $username, $artist, $song, $rating) {
         $query = "UPDATE ratings SET username = ?, artist = ?, song = ?, rating = ? WHERE id = ?";
         $stmt = mysqli_prepare($this->connection, $query);
-        mysqli_stmt_bind_param($stmt, "sssi", $username, $artist, $song, $rating, $ratingId);
+        mysqli_stmt_bind_param($stmt, "ssssi", $username, $artist, $song, $rating, $ratingId);
         mysqli_stmt_execute($stmt);
         return mysqli_stmt_affected_rows($stmt) > 0;
     }
