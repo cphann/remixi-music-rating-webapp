@@ -40,10 +40,13 @@ class RatingModel extends Database
             return false; // Not the owner of the rating
         }
 
-        //delete if all conditions met
-        $query = "DELETE FROM ratings WHERE id = ?";
-        $this->executeStatement($query, $params);
-        return true;
+        $query = "DELETE FROM ratings WHERE id = ? AND username = ?";
+    
+        $stmt = mysqli_prepare($this->connection, $query);
+        mysqli_stmt_bind_param($stmt, "is", $ratingId, $username);
+        mysqli_stmt_execute($stmt);
+        
+        return mysqli_stmt_affected_rows($stmt) > 0;
     }
    
 }
