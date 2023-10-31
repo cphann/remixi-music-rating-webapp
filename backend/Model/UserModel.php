@@ -28,18 +28,19 @@ class UserModel extends Database
         return count($result) > 0;
     }
 
-    public function registerUser($userData)
+    public function registerUser($username, $hashed_password, $salt)
     {
-        // $insert_query = "INSERT INTO users (username, pass, salt) VALUES (?, ?, ?)";
-        // $insert_stmt = mysqli_prepare($conn, $insert_query);
-        // mysqli_stmt_bind_param($insert_stmt, "sss", $username, $hashed_password, $salt);
-        // mysqli_stmt_execute($insert_stmt);
-
         $insert_query = "INSERT INTO users (username, pass, salt) VALUES (?, ?, ?)";
-        $params = ['sss', $username, $hashed_password, $salt];
+        $insert_stmt = mysqli_prepare($conn, $insert_query);
+        mysqli_stmt_bind_param($insert_stmt, "sss", $username, $hashed_password, $salt);
+        mysqli_stmt_execute($insert_stmt);
+        return true;
+
+        /*$insert_query = "INSERT INTO users (username, pass, salt) VALUES (?, ?, ?)";
+        $params = ['sss', $username, $hashed_password, $salt];*/
 
         // Execute the database insert operation
-        try {
+        /*try {
             $this->executeStatement($insert_query, $params);
             // Return true to indicate successful registration
             return true;
@@ -47,6 +48,6 @@ class UserModel extends Database
             // Handle any database errors and return false to indicate registration failure
             return false;
         }    
-    }
+    }*/
 
 }

@@ -41,16 +41,46 @@ class UserController extends BaseController
 
     public function registerAction()
     {
-        // Get the request method
-        $requestMethod = $_SERVER["REQUEST_METHOD"];
 
-        if (strtoupper($requestMethod) == 'POST') {
+       $strErrorDesc = '';
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        $arrQueryStringParams = $this->getQueryStringParams();
+
+        // Get username and passwords from the URL query parameters
+        /*$username = $_GET['username'] ?? '';
+        $password = $_GET['password'] ?? '';
+        $confirm_password = $_GET['confirm_password'] ?? '';
+
+        if (strtoupper($requestMethod) == 'GET') {
             $userModel = new UserModel();
             $userExists = $userModel->isUserRegistered($username);
 
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-            $confirm_password = $_POST['confirm_password'];
+            // Perform similar validation and registration logic as shown in the previous examples...
+        } else {
+            $strErrorDesc = 'Method not supported';
+            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+        }*/
+
+        /*$username = $_POST['username'];
+        $password = $_POST['password'];
+        $confirm_password = $_POST['confirm_password'];*/
+
+        if (strtoupper($requestMethod) == 'POST') {
+            $postData = json_decode(file_get_contents('php://input'), true);
+            $userModel = new UserModel();
+            $userExists = $userModel->isUserRegistered($username);
+        
+            // Check if the data was sent as JSON and properly decoded
+            if ($postData !== null) {
+                $username = $postData['username'] ?? '';
+                $password = $postData['password'] ?? '';
+                $confirm_password = $postData['confirm_password'] ?? '';
+            } else {
+                // If JSON decoding fails or the data is not in the expected format
+                // Handle the situation, set error descriptions, response codes, etc.
+                $strErrorDesc = 'Invalid or missing data in request body';
+                $strErrorHeader = 'HTTP/1.1 400 Bad Request';
+            }
 
             // Check if the username already exists
             if ($userExists) {
