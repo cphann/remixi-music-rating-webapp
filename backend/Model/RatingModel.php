@@ -25,5 +25,25 @@ class RatingModel extends Database
         mysqli_stmt_execute($stmt);
         return mysqli_stmt_affected_rows($stmt) > 0;
     }
-    
+
+    public function deleteRating($ratingId, $username) {
+        //check if logged in user matches username of the rating
+        $query = "SELECT username FROM ratings WHERE id = ?";
+        $params = ['i', $ratingId];
+        $result = $this->select($query, $params);
+
+        if(!$result || count($result) == 0) {
+            return false; // Rating not found
+        }
+
+        if($result[0]['username'] != $username) {
+            return false; // Not the owner of the rating
+        }
+
+        //delete if all conditions met
+        $query = "DELETE FROM ratings WHERE id = ?";
+        $this->executeStatement($query, $params);
+        return true;
+    }
+   
 }
