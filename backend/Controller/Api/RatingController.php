@@ -97,8 +97,12 @@ class RatingController extends BaseController
 
         if ($requestMethod == 'DELETE') {
             $postData = json_decode(file_get_contents('php://input'), true);
-            $ratingId = $_GET['ratingId'] ?? '';  // get rating id 
+            $ratingId = $_GET['ratingId'] ?? null;  // get rating id 
             $username = $_SESSION['username']; // get logged in username
+
+            if (!$ratingId) {
+                $this->sendOutput(json_encode(['error' => 'Rating ID not provided']), ['Content-Type: application/json', 'HTTP/1.1 400 Bad Requests']);
+            }
 
             $ratingModel = new RatingModel();
             $result = $ratingModel->deleteRating($ratingId, $username);
