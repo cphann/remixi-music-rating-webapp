@@ -38,8 +38,9 @@ class UserController extends BaseController
             );
         }
     }
-    public function creatAction()
+    public function createAction()
     {
+        
         // Get the request method
         $requestMethod = $_SERVER["REQUEST_METHOD"];
 
@@ -50,3 +51,4 @@ class UserController extends BaseController
             $userModel->createUser($postData);
         }
     }
+}

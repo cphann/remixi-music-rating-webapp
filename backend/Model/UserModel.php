@@ -10,13 +10,18 @@ class UserModel extends Database
     {
         return $this->insert("SELECT * FROM users ORDER BY username ASC LIMIT ?", ["i", $limit]);
     }
+
+    public function isUserRegistered($username) {
+        $query = "SELECT * FROM users WHERE username = ?";
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        return (mysqli_num_rows($result) > 0);
+    }
+
     public function createUser($userData)
     {
-        $salt = bin2hex(random_bytes(16));
-        $salted_password = $password . $salt;
-        $hashed_password = password_hash($salted_password, PASSWORD_DEFAULT);
-    
-        //Insert new username and password into users table
         $insert_query = "INSERT INTO users (username, pass, salt) VALUES (?, ?, ?)";
         $insert_stmt = mysqli_prepare($conn, $insert_query);
         mysqli_stmt_bind_param($insert_stmt, "sss", $username, $hashed_password, $salt);
