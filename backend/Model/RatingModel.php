@@ -28,20 +28,21 @@ class RatingModel extends Database
 
     public function deleteRating($ratingId, $username) {
         // Check if a rating with the given ID and username exists
-        $query = "SELECT id FROM ratings WHERE id = ? AND username = ?";
+        // $query = "SELECT id FROM ratings WHERE id = ? AND username = ?";
             
-        $stmt = mysqli_prepare($this->connection, $query);
-        mysqli_stmt_bind_param($stmt, "is", $ratingId, $username);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-        $rating = mysqli_fetch_assoc($result);
+        // $stmt = mysqli_prepare($this->connection, $query);
+        // mysqli_stmt_bind_param($stmt, "is", $ratingId, $username);
+        // mysqli_stmt_execute($stmt);
+        // $result = mysqli_stmt_get_result($stmt);
+        // $rating = mysqli_fetch_assoc($result);
 
-        if (!$rating) {
-            return false; // Rating with given ID and username doesn't exist
-        }
+        // if (!$rating) {
+        //     return false; // Rating with given ID and username doesn't exist
+        // }
 
         // Delete the rating
         $query = "DELETE FROM ratings WHERE id = ? AND username = ?";
+        $stmt = mysqli_prepare($this->connection, $query);
         mysqli_stmt_bind_param($stmt, "is", $ratingId, $username);
         mysqli_stmt_execute($stmt);
         
