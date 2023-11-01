@@ -4,6 +4,7 @@ import axios from 'axios';
 //import UpdateRating from './UpdateRating';
 /* add after each rating if user logged in made rating
             {rating.username === loggedInUser && (
+            <>
               <DeleteRating ratingId={rating.id} />
               <UpdateRating ratingId={rating.id} />
             </>
