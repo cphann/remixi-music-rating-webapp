@@ -28,7 +28,7 @@ export default function Login () {
 
     return (
         <div>
-            <h2>Welcome to Remixi</h2>
+            <h2>Login</h2>
             <form onSubmit={handleLogin}>
                 <div>
                 <input

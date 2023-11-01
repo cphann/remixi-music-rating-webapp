@@ -25,8 +25,8 @@ function App() {
 export default App;*/
 
 import React from 'react';
-import Signup from './signup';
-import Login from './login';
+import Signup from './Signup';
+import Login from './Login';
 // import Logout from './logout';
 //import HomePage from './homepage';
 // import ViewRating from './viewrating';
@@ -37,7 +37,7 @@ import Login from './login';
 function App() {
   return (
     <div className="App">
-      <h1>Ratings App</h1>
+      <h1>Remixi Ratings App</h1>
       <Login />
       <Signup />
     </div>
