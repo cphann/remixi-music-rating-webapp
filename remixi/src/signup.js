@@ -16,7 +16,7 @@ function SignUp() {
     }
 
     try {
-      const response = await axios.post('http://your-backend-url/user/register', {
+      const response = await axios.post('http://localhost/comp333_hw3/backend/index.php/user/register', {
         username: username,
         password: password,
         confirm_password: confirmPassword,
@@ -30,8 +30,13 @@ function SignUp() {
         setMessage('Successfully signed up! You can now log in.');
       }
     } catch (error) {
-      setMessage('Error during signup. Please try again.');
-    }
+      if (error.response && error.response.data && error.response.data.error) {
+          setMessage(error.response.data.error);
+      } else {
+          setMessage('Error during signup. Please try again.');
+      }
+  }
+  
   };
 
   return (

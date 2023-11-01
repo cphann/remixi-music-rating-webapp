@@ -26,7 +26,7 @@ export default App;*/
 
 import React from 'react';
 import HomePage from './homepage';
-import SignUp from './signup';
+import Signup from './signup';
 import Login from './login';
 import Logout from './logout';
 import ViewRating from './viewrating';
@@ -39,6 +39,7 @@ function App() {
     <div className="App">
       <h1>Ratings App</h1>
       <HomePage />
+      <Signup />
       <Login />
       <Logout />
       <ViewRating ratingId={1} /> {/* Example, you can fetch ratingId dynamically */}
