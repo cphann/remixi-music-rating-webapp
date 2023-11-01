@@ -25,10 +25,10 @@ function App() {
 export default App;*/
 
 import React from 'react';
-//import HomePage from './homepage';
 import Signup from './signup';
 import Login from './login';
 // import Logout from './logout';
+//import HomePage from './homepage';
 // import ViewRating from './viewrating';
 // import AddRating from './addrating.js';
 // import UpdateRating from './updaterating';
