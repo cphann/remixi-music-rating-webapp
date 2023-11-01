@@ -4,6 +4,7 @@ import UserContext from './UserContext';
 import Signup from './Signup';
 import Login from './Login';
 import HomePage from './HomePage';
+import ViewRating from './ViewRating';
 import AddRating from './AddRating';
 import { Link } from 'react-router-dom';
 
@@ -15,14 +16,14 @@ function App() {
         localStorage.setItem('username', user); // save to localStorage
     };
 
-    /*                    <div className="navigation">
-                        <Link to="/login">Login</Link>
-                        {' | '}
-                        <Link to="/signup">Signup</Link>
-                        {' | '}
-                        <Link to="/add-rating">Add Rating</Link>
-                    </div>
-    */
+    // /*                    <div className="navigation">
+    //                     <Link to="/login">Login</Link>
+    //                     {' | '}
+    //                     <Link to="/signup">Signup</Link>
+    //                     {' | '}
+    //                     <Link to="/add-rating">Add Rating</Link>
+    //                 </div>
+    // */
 
     return (
       
@@ -36,6 +37,7 @@ function App() {
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/add-rating" element={<AddRating />} />
                         <Route path="/homepage" element={<HomePage />} />
+                        <Route path="/view-rating/:id" element={<ViewRating />} />
                     </Routes>
                 </div>
             </Router>

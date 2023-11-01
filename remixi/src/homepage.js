@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 //import DeleteRating from './DeleteRating';
 //import UpdateRating from './UpdateRating';
 /* add after each rating if user logged in made rating
@@ -17,7 +18,7 @@ function HomePage() {
   useEffect(() => {
     const fetchRatings = async () => {
         try {
-            const response = await axios.get('http://localhost/comp333_hw3/backend/index.php/ratings/list?limit=100');
+            const response = await axios.get('http://localhost:8080/comp333_hw3/backend/index.php/ratings/list?limit=100');
             console.log("Backend response:", response.data);
             if (Array.isArray(response.data)) {
                 setRatings(response.data);
@@ -51,6 +52,7 @@ function HomePage() {
             <td>{rating.artist}</td>
             <td>{rating.song}</td>
             <td>{rating.rating}</td>
+            <td><Link to={`/view-rating/${rating.id}`}>View</Link></td> 
           </tr>
         ))}
       </tbody>
