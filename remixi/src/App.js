@@ -27,6 +27,7 @@ export default App;*/
 import React from 'react';
 import Signup from './Signup';
 import Login from './Login';
+import HomePage from './homepage';
 // import Logout from './logout';
 //import HomePage from './homepage';
 // import ViewRating from './viewrating';
@@ -40,6 +41,7 @@ function App() {
       <h1>Remixi Ratings App</h1>
       <Login />
       <Signup />
+      <HomePage />
     </div>
   );
 }
