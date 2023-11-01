@@ -14,7 +14,7 @@ export default function Login () {
         event.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8080/comp333_hw3/backend/index.php/user/login', {
+            const response = await axios.post('http://localhost/comp333_hw3/backend/index.php/user/login', {
                 username: username,
                 password: password
             });
@@ -22,7 +22,7 @@ export default function Login () {
                 if (response.data.message === 'Login successful') {
                     setUserSession(username); // Set the user in context after successful login
                     setErrorMessage(response.data.message);
-                    navigate('/add-rating');
+                    navigate('/homepage');
                 }
             }
         } catch (error) {

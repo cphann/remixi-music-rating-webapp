@@ -22,7 +22,7 @@ export default function Login () {
                 if (response.data.message === 'Login successful') {
                     setUserSession(username); // Set the user in context after successful login
                     setErrorMessage(response.data.message);
-                    navigate('/add-rating');
+                    navigate('/homepage');
                 }
             }
         } catch (error) {
