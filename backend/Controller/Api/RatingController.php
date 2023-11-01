@@ -91,4 +91,29 @@ class RatingController extends BaseController
             $this->sendOutput(json_encode(['error' => 'Failed to add rating']), ['Content-Type: application/json', 'HTTP/1.1 500 Internal Server Error']);
         }
     }
+
+    public function deleteRatingAction() {
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+
+        if ($requestMethod == 'DELETE') {
+            $postData = json_decode(file_get_contents('php://input'), true);
+            $ratingId = $_GET['id'] ?? null;  // get rating id 
+            $username = $_SESSION['username']; // get logged in username
+
+            if (!$ratingId) {
+                $this->sendOutput(json_encode(['error' => 'Rating ID not provided']), ['Content-Type: application/json', 'HTTP/1.1 400 Bad Requests']);
+            }
+
+            $ratingModel = new RatingModel();
+            $result = $ratingModel->deleteRating($ratingId, $username);
+
+            if ($result) {
+                $this->sendOutput(json_encode(['message' => 'Rating deleted successfully']), ['Content-Type: application/json', 'HTTP/1.1 201 Created']);
+            } else {
+                $this->sendOutput(json_encode(['error' => 'Failed to delete rating']), ['Content-Type: application/json', 'HTTP/1.1 500 Internal Server Error']);
+            }
+        } else {
+            $this->sendOutput(json_encode(['error' => 'Method not supported']), ['Content-Type: application/json', 'HTTP/1.1 405 Method Not Allowed']);
+        }
+    }
 }
