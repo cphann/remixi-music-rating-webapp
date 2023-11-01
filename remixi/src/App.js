@@ -26,10 +26,13 @@ export default App;*/
 
 import React from 'react';
 import HomePage from './homepage';
-import Signup from './signup';
-import Login from './Login';
-import DisplayRating from './DisplayRating';
-import AddRating from './AddRating';
+import SignUp from './signup';
+import Login from './login';
+import LogOut from '.logout';
+import ViewRating from './viewrating';
+import AddRating from './addrating';
+import UpdateRating from './updaterating';
+import DeleteRating from './deleterating';
 
 function App() {
   return (
@@ -38,8 +41,10 @@ function App() {
       <HomePage />
       <Login />
       <Logout />
-      <DisplayRatings /> {/* Example, you can fetch ratingId dynamically */}
+      <ViewRating ratingId={1} /> {/* Example, you can fetch ratingId dynamically */}
       <AddRating />
+      <UpdateRating />
+      <DeleteRating/>
       
     </div>
   );
