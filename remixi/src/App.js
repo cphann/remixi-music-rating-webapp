@@ -28,8 +28,7 @@ import React from 'react';
 import Signup from './Signup';
 import Login from './Login';
 import HomePage from './HomePage';
-// import Logout from './logout';
-//import HomePage from './homepage';
+import Logout from './Logout';
 // import ViewRating from './viewrating';
 // import AddRating from './addrating.js';
 // import UpdateRating from './updaterating';
@@ -42,6 +41,7 @@ function App() {
       <Login />
       <Signup />
       <HomePage />
+      <Logout />
     </div>
   );
 }
