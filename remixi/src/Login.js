@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
+import UserContext from './UserContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login () {
+    const { setUserSession } = useContext(UserContext);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate(); 
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -15,7 +19,11 @@ export default function Login () {
                 password: password
             });
             if (response.data.message) {
-                setErrorMessage(response.data.message);
+                if (response.data.message === 'Login successful') {
+                    setUserSession(username); // Set the user in context after successful login
+                    setErrorMessage(response.data.message);
+                    navigate('/add-rating');
+                }
             }
         } catch (error) {
             if (error.response) {
