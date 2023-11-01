@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useCallback   } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import DeleteRating from './DeleteRating';
+import UserContext from './UserContext';
 //import DeleteRating from './DeleteRating';
 //import UpdateRating from './UpdateRating';
 /* add after each rating if user logged in made rating
@@ -13,25 +15,34 @@ import { Link } from 'react-router-dom';
 
 function HomePage() {
   const [ratings, setRatings] = useState([]);
+  const { username } = useContext(UserContext);
   //const loggedInUser = localStorage.getItem('username');  // Assuming the logged-in username is stored in local storage
 
-  useEffect(() => {
-    const fetchRatings = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/comp333_hw3/backend/index.php/ratings/list?limit=100');
-            console.log("Backend response:", response.data);
-            if (Array.isArray(response.data)) {
-                setRatings(response.data);
-            } else {
-                console.error("Received non-array data from backend:", response.data);
-            }
-        } catch (error) {
-            console.error("Error fetching ratings:", error);
-        }
-    };
+  // This function is now a `useCallback` hook, which will be memoized
+  // and can be called again later without being redefined.
+  const fetchRatings = useCallback(async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/comp333_hw3/backend/index.php/ratings/list?limit=100');
+      console.log("Backend response:", response.data);
+      if (Array.isArray(response.data)) {
+        setRatings(response.data);
+      } else {
+        console.error("Received non-array data from backend:", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching ratings:", error);
+    }
+  }, []); // Empty dependency array means this function is created only once
 
+  // Initial fetch of ratings when the component is mounted
+  useEffect(() => {
     fetchRatings();
-}, []);
+  }, [fetchRatings]);
+
+  // Function to be passed to DeleteRating to allow it to trigger a refresh
+  const handleDeleteSuccess = useCallback(() => {
+    fetchRatings(); // Refetch ratings after a delete
+  }, [fetchRatings]);
 
   return (
     <div>
@@ -53,6 +64,11 @@ function HomePage() {
             <td>{rating.song}</td>
             <td>{rating.rating}</td>
             <td><Link to={`/view-rating/${rating.id}`}>View</Link></td> 
+            {rating.username === username && ( // Check if the rating belongs to the logged-in user
+              <td>
+                  <DeleteRating ratingId={rating.id} onDeleteSuccess={handleDeleteSuccess} />
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
