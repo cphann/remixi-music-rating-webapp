@@ -1,49 +1,43 @@
-/*import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;*/
-
-import React from 'react';
+import React, { useState } from 'react';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import UserContext from './UserContext';
 import Signup from './Signup';
 import Login from './Login';
-import HomePage from './HomePage';
-// import Logout from './logout';
-//import HomePage from './homepage';
-// import ViewRating from './viewrating';
-// import AddRating from './addrating.js';
-// import UpdateRating from './updaterating';
-// import DeleteRating from './deleterating';
+import AddRating from './AddRating';
+import { Link } from 'react-router-dom';
 
 function App() {
-  return (
-    <div className="App">
-      <h1>Remixi Ratings App</h1>
-      <Login />
-      <Signup />
-      <HomePage />
-    </div>
-  );
+    const [username, setUsername] = useState(localStorage.getItem('username') || null);
+
+    const setUserSession = (user) => {
+        setUsername(user);
+        localStorage.setItem('username', user); // save to localStorage
+    };
+
+    return (
+      
+        <UserContext.Provider value={{ username, setUserSession }}>
+            <Router>
+                <div className="App">
+                    <h1>Remixi Ratings App</h1>
+
+                    <div className="navigation">
+                        <Link to="/login">Login</Link>
+                        {' | '}
+                        <Link to="/signup">Signup</Link>
+                        {' | '}
+                        <Link to="/add-rating">Add Rating</Link>
+                    </div>
+
+                    <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<Signup />} />
+                        <Route path="/add-rating" element={<AddRating />} />
+                    </Routes>
+                </div>
+            </Router>
+        </UserContext.Provider>
+    );
 }
 
 export default App;
