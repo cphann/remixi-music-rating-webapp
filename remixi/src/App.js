@@ -25,26 +25,26 @@ function App() {
 export default App;*/
 
 import React from 'react';
-import HomePage from './homepage';
-import SignUp from './signup';
 import Login from './login';
-import LogOut from '.logout';
-import ViewRating from './viewrating';
-import AddRating from './addrating.js';
-import UpdateRating from './updaterating';
-import DeleteRating from './deleterating';
+// import HomePage from './homepage';
+// import SignUp from './signup';
+// import LogOut from './logout';
+// import ViewRating from './viewrating';
+// import AddRating from './addrating.js';
+// import UpdateRating from './updaterating';
+// import DeleteRating from './deleterating';
 
 function App() {
   return (
     <div className="App">
       <h1>Ratings App</h1>
-      <HomePage />
       <Login />
-      <Logout />
-      <ViewRating ratingId={1} /> {/* Example, you can fetch ratingId dynamically */}
+      {/* <Logout />
+      <HomePage />
+      <ViewRating ratingId={1} /> 
       <AddRating />
       <UpdateRating />
-      <DeleteRating/>
+      <DeleteRating/> */}
       
     </div>
   );
