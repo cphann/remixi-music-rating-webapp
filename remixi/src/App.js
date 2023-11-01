@@ -30,7 +30,7 @@ import SignUp from './signup';
 import Login from './login';
 import LogOut from '.logout';
 import ViewRating from './viewrating';
-import AddRating from './addrating';
+import AddRating from './addrating.js';
 import UpdateRating from './updaterating';
 import DeleteRating from './deleterating';
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import DeleteRating from './DeleteRating';
-import UpdateRating from './UpdateRating';
+import DeleteRating from './deleterating';
+import UpdateRating from './updaterating';
 
 function HomePage() {
   const [ratings, setRatings] = useState([]);
