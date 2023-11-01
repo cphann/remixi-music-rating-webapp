@@ -14,7 +14,7 @@ export default function Login () {
         event.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost/comp333_hw3/backend/index.php/user/login', {
+            const response = await axios.post('http://localhost:8080/comp333_hw3/backend/index.php/user/login', {
                 username: username,
                 password: password
             });
@@ -57,7 +57,7 @@ export default function Login () {
                 />
                 </div>
                 <div>
-                <button type="submit">Sign Up</button>
+                <button type="submit">Login</button>
                 </div>
             </form>
 
