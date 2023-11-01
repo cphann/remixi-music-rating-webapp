@@ -27,7 +27,7 @@ export default App;*/
 import React from 'react';
 //import HomePage from './homepage';
 import Signup from './signup';
-// import Login from './login';
+import Login from './login';
 // import Logout from './logout';
 // import ViewRating from './viewrating';
 // import AddRating from './addrating.js';
@@ -38,6 +38,7 @@ function App() {
   return (
     <div className="App">
       <h1>Ratings App</h1>
+      <Login />
       <Signup />
     </div>
   );
