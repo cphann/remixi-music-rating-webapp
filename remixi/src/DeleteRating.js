@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useContext } from 'react';
 import UserContext from './UserContext';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons"; // Import the trash icon
 
 function DeleteRating({ ratingId, onDeleteSuccess }) {
   const { username } = useContext(UserContext);
@@ -28,7 +30,9 @@ function DeleteRating({ ratingId, onDeleteSuccess }) {
   
 
   return (
-    <button onClick={handleDelete}>Delete</button>
+    <button onClick={handleDelete}>
+    <FontAwesomeIcon icon={faTrash} style={{color: "#7ec0dd",}} />
+    </button>
   );
 }
 

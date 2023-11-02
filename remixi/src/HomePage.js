@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import DeleteRating from './DeleteRating';
 import UserContext from './UserContext';
 import UpdateRating from './UpdateRating';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons"; // Import the star icon
 
 function HomePage() {
   const [ratings, setRatings] = useState([]);
@@ -36,9 +38,25 @@ function HomePage() {
     fetchRatings(); // Refetch ratings after a delete
   }, [fetchRatings]);
 
+  function renderRatingStars(rating) {
+    const starIcons = [];
+  
+    for (let i = 1; i <= rating; i++) {
+      starIcons.push(
+        <FontAwesomeIcon
+          icon={faStar} // Use the star icon from FontAwesome
+          style={{color: "#7ec0dd",}} 
+        />
+      );
+    }
+    return starIcons;
+  }
+
+
   return (
     <div>
       <h2>Home Page</h2>
+      {username && <p>Welcome, {username}!</p>} {/* Display the logged-in user's name */}
       <Link to="/add-rating">Add Rating</Link>
       <table>
       <thead>
@@ -55,12 +73,14 @@ function HomePage() {
             <td>{rating.id}</td>
             <td>{rating.artist}</td>
             <td>{rating.song}</td>
-            <td>{rating.rating}</td>
+            <td>{renderRatingStars(rating.rating)}</td>
             <td><Link to={`/view-rating/${rating.id}`}>View</Link></td> 
             {rating.username === username && ( // Check if the rating belongs to the logged-in user
               <td>
                 <DeleteRating ratingId={rating.id} onDeleteSuccess={handleDeleteSuccess} />
-                <Link to={`/update-rating/${rating.id}`}>Update</Link>
+                <Link to={`/update-rating/${rating.id}`}>
+                    <FontAwesomeIcon icon={faEdit} style={{color: "#7ec0dd",}}/> {/* Delete icon */}
+                </Link>
               </td>
             )}
           </tr>
