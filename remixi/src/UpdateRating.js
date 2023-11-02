@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 
 const UpdateRating = ({ match }) => {
     const [rating, setRating] = useState({
@@ -12,8 +12,11 @@ const UpdateRating = ({ match }) => {
     });
     const [errorMessage, setErrorMessage] = useState('');
     const { id } = useParams();
-    // const ratingId = match.params.id; // Assuming you're using react-router-dom
-
+    const navigate = useNavigate();
+    
+    const handleCancel = () => {
+        navigate('/homepage');
+    };
     useEffect(() => {
         // Fetch the existing rating details to prepopulate the form
         const fetchRating = async () => {
@@ -50,7 +53,7 @@ const UpdateRating = ({ match }) => {
             const response = await axios.post(`http://localhost:8080/comp333_hw3/backend/index.php/ratings/updateRating?id=${id}`, rating);
             if (response.data.message) {
                 alert('Rating updated successfully');
-                // You may want to navigate to the homepage or perform some other action here
+                navigate('/homepage');
             }
         } catch (error) {
             if (error.response) {
@@ -71,9 +74,10 @@ const UpdateRating = ({ match }) => {
                 <input type="number" name="rating" value={rating.rating} onChange={handleInputChange} required /> <br/>
                 <button type="submit">Update</button>
             </form>
-
             {errorMessage && <p>{errorMessage}</p>}
+            <button onClick={handleCancel}>Cancel</button>
         </div>
+        
     );
 };
 
