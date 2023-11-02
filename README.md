@@ -53,4 +53,6 @@ How to run the file locally: First, start your MySQL Database and Apache Web Ser
 
 Credit: Our code was assisted by ChatGPT, fixed and synthesized by us.
 
+Late Submission: As we used 1 late day, please look at our latest commit before Thursday @10am
+
 50/50
