@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import UserContext from './UserContext'; 
+import { useNavigate } from 'react-router-dom';
 
 export default function AddRating() {
     const [artist, setArtist] = useState('');
@@ -8,18 +9,23 @@ export default function AddRating() {
     const [rating, setRating] = useState(0);
     const { username } = useContext(UserContext); 
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
+    
+    const handleCancel = () => {
+        navigate('/homepage');
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8080/comp333_hw3/backend/index.php/rating/addRating', {
+            const response = await axios.post('http://localhost/comp333_hw3/backend/index.php/ratings/addRating', {
                 username,
                 artist,
                 song,
                 rating
             });
-
+            navigate('/homepage');
             // Handle success
             setMessage(response.data.message || 'Rating submitted successfully!');
         } catch (error) {
@@ -57,8 +63,8 @@ export default function AddRating() {
                 />
                 <button type="submit">Submit Rating</button>
             </form>
-
             {message && <p>{message}</p>}
+            <button onClick={handleCancel}>Cancel</button>
         </div>
     );
 }

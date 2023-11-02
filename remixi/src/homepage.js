@@ -1,18 +1,8 @@
 import React, { useState, useEffect, useContext, useCallback   } from 'react';
 import axios from 'axios';
-import Logout from './Logout';
 import { Link } from 'react-router-dom';
 import DeleteRating from './DeleteRating';
 import UserContext from './UserContext';
-//import DeleteRating from './DeleteRating';
-//import UpdateRating from './UpdateRating';
-/* add after each rating if user logged in made rating
-            {rating.username === loggedInUser && (
-            <>
-              <DeleteRating ratingId={rating.id} />
-              <UpdateRating ratingId={rating.id} />
-            </>
-          )}*/
 
 function HomePage() {
   const [ratings, setRatings] = useState([]);
@@ -23,7 +13,7 @@ function HomePage() {
   // and can be called again later without being redefined.
   const fetchRatings = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:8080/comp333_hw3/backend/index.php/ratings/list?limit=100');
+      const response = await axios.get('http://localhost/comp333_hw3/backend/index.php/ratings/list?limit=100');
       console.log("Backend response:", response.data);
       if (Array.isArray(response.data)) {
         setRatings(response.data);
@@ -47,7 +37,6 @@ function HomePage() {
 
   return (
     <div>
-      <Logout />
       <h2>Home Page</h2>
       <Link to="/add-rating">Add Rating</Link>
       <table>

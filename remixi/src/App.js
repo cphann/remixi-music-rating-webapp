@@ -10,25 +10,16 @@ import AddRating from './AddRating';
 
 function App() {
     const [username, setUsername] = useState(localStorage.getItem('username') || null);
-    const [showLogin, setShowLogin] = useState(false);
-    const [showSignup, setShowSignup] = useState(false);
     
     const setUserSession = (user) => {
         setUsername(user);
         localStorage.setItem('username', user); // save to localStorage
     };
+
     return (
         <UserContext.Provider value={{ username, setUserSession }}>
             <Router>
-                <AppContent 
-                    showLogin={showLogin}
-                    setShowLogin={setShowLogin}
-                    showSignup={showSignup}
-                    setShowSignup={setShowSignup}
-                />
-                <div className="App">
-                    <h1>Remixi Ratings App</h1>
-
+                <AppContent />
                     <Routes>
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
@@ -36,18 +27,14 @@ function App() {
                         <Route path="/homepage" element={<HomePage />} />
                         <Route path="/view-rating/:id" element={<ViewRating />} />
                     </Routes>
-                </div>
             </Router>
         </UserContext.Provider>
     );
 }
 
-function AppContent({
-    showLogin,
-    showSignup,
-}) {
+function AppContent() {
     const navigate = useNavigate();
-    const { username } = useContext(UserContext);
+    const { username, setUserSession } = useContext(UserContext); // Now this should work as setUserSession is provided in context
 
     const handleLoginClick = () => {
         navigate('/login');
@@ -56,30 +43,31 @@ function AppContent({
         navigate('/signup');
     };
 
+    // You can also handle logout here or in another component
+    const handleLogout = () => {
+        setUserSession(null);
+        localStorage.removeItem('username');
+        navigate('/login');
+    };
 
     return (
         <div className="App">
             <h1>Remixi Ratings App</h1>
-            {!username && (
             <div>
-                {showLogin ? (
-                    <Login />
-                ) : (
-                    <button onClick={handleLoginClick}>Log In</button>
+                {!username && (
+                    <div>
+                        <button onClick={handleLoginClick}>Log In</button>
+                        <button onClick={handleSignupClick}>Sign Up</button>
+                    </div>
                 )}
-                {showSignup ? (
-                    <Signup />
-                ) : (
-                    <button onClick={handleSignupClick}>Sign Up</button>
+                {/* If you want to display logout button when user is logged in */}
+                {username && (
+                    <div>
+                        {/* Display user info and logout button */}
+                        <button onClick={handleLogout}>Log Out</button>
+                    </div>
                 )}
             </div>
-            )}
-            <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/add-rating" element={<AddRating />} />
-                <Route path="/homepage" element={<HomePage />} />
-            </Routes>
         </div>
     );
 }
