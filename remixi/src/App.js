@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import UserContext from './UserContext'; // Context for user session state
 import Signup from './Signup'; // Signup component
 import Login from './Login'; // Login component
