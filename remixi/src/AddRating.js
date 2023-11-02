@@ -19,7 +19,7 @@ export default function AddRating() {
         event.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8080/comp333_hw3/backend/index.php/ratings/addRating', {
+            const response = await axios.post('http://localhost/comp333_hw3/backend/index.php/ratings/addRating', {
                 username,
                 artist,
                 song,

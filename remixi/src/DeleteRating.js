@@ -10,7 +10,7 @@ function DeleteRating({ ratingId, onDeleteSuccess }) {
     const confirmDelete = window.confirm("Are you sure you want to delete this rating?");
     if (confirmDelete) {
       try {
-        const response = await axios.delete(`http://localhost:8080/comp333_hw3/backend/index.php/ratings/deleteRating?id=${ratingId}`, {
+        const response = await axios.delete(`http://localhost/comp333_hw3/backend/index.php/ratings/deleteRating?id=${ratingId}`, {
           headers: {
             'Content-Type': 'application/json',
           },

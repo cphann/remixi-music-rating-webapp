@@ -124,7 +124,7 @@ class RatingController extends BaseController
     
         // Check for an existing rating with the same user, artist, and song
         if ($existingEntry) {
-            $this->sendOutput(json_encode(['error' => 'Rating already exists']), ['Content-Type: application/json', 'HTTP/1.1 409 Conflict']);
+            $this->sendOutput(json_encode(['error' => 'This rating already exists. Please update your existing rating instead.']), ['Content-Type: application/json', 'HTTP/1.1 409 Conflict']);
             return;
         }
 

@@ -85,7 +85,7 @@ class RatingModel extends Database
         mysqli_stmt_bind_param($stmt, "sss", $username, $artist, $song);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-        return mysqli_fetch_assoc($result);
+        return mysqli_fetch_assoc($result) > 0;
     }
 
     public function updateRating($ratingId, $username, $artist, $song, $rating) {
