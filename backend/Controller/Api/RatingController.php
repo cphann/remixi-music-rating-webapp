@@ -161,4 +161,27 @@ class RatingController extends BaseController
             $this->sendOutput(json_encode(['error' => 'Method not supported']), ['Content-Type: application/json', 'HTTP/1.1 405 Method Not Allowed']);
         }
     }
+
+    public function searchAction()
+    {
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        if (strtoupper($requestMethod) == 'GET') {
+            try {
+                $artist = $_GET['artist'] ?? null;
+                $song = $_GET['song'] ?? null;
+                $minRating = isset($_GET['minRating']) ? (int)$_GET['minRating'] : null;
+                $maxRating = isset($_GET['maxRating']) ? (int)$_GET['maxRating'] : null;
+
+                $ratingModel = new RatingModel();
+                $arrRatings = $ratingModel->searchRatings($artist, $song, $minRating, $maxRating);
+                $responseData = json_encode($arrRatings);
+                $this->sendOutput($responseData, ['Content-Type: application/json', 'HTTP/1.1 200 OK']);
+            } catch (Error $e) {
+                $this->sendOutput(json_encode(['error' => $e->getMessage()]), ['Content-Type: application/json', 'HTTP/1.1 500 Internal Server Error']);
+            }
+        } else {
+            $this->sendOutput(json_encode(['error' => 'Method not supported']), ['Content-Type: application/json', 'HTTP/1.1 405 Method Not Allowed']);
+        }
+    }
+
 }

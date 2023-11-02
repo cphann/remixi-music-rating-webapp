@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import DeleteRating from './DeleteRating';
 import UserContext from './UserContext';
+import SearchRating from './SearchRating';
 import UpdateRating from './UpdateRating';
 
 function HomePage() {
@@ -39,7 +40,8 @@ function HomePage() {
   return (
     <div>
       <h2>Home Page</h2>
-      <Link to="/add-rating">Add Rating</Link>
+      <p><Link to="/add-rating">Add Rating</Link></p>
+      <p><Link to="/search">Search</Link></p>
       <table>
       <thead>
         <tr>
