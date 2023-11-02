@@ -28,8 +28,15 @@ class UserModel extends Database
 
     //Retrieve information about a user based on their username.
     public function getUser($username) {
-        $stmt = mysqli_prepare($this->connection, "SELECT * FROM users WHERE username = ?");
+        $query = "SELECT * FROM users WHERE username = ?";
+        $stmt = mysqli_prepare($this->connection, $query);
         mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+        $user = mysqli_fetch_assoc($result);
+
+        return $user;
     }
 
 }

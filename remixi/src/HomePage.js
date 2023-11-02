@@ -78,7 +78,6 @@ function HomePage() {
             <td><Link to={`/view-rating/${rating.id}`}>View</Link></td> 
             {rating.username === username && ( // Check if the rating belongs to the logged-in user
               <td>
-                <Link to={`/update-rating/${rating.id}`}>Update</Link>
                 <DeleteRating ratingId={rating.id} onDeleteSuccess={handleDeleteSuccess} />
                 <Link to={`/update-rating/${rating.id}`}>
                     <FontAwesomeIcon icon={faEdit} style={{color: "#7ec0dd",}}/> {/* Delete icon */}

@@ -89,15 +89,25 @@ class RatingModel extends Database
 
     // Retrieves a rating by username, artist, and song combination.
     public function getRatingByUserArtistSong($username, $artist, $song) {
-        // Prepare the SQL query to select a rating based on username, artist, and song.
         $query = "SELECT * FROM ratings WHERE username = ? AND artist = ? AND song = ?";
         $stmt = mysqli_prepare($this->connection, $query);
+        if (!$stmt) {
+            // Handle error, possibly using mysqli_error($this->connection)
+            return false;
+        }
         mysqli_stmt_bind_param($stmt, "sss", $username, $artist, $song);
-        mysqli_stmt_execute($stmt);
+        if (!mysqli_stmt_execute($stmt)) {
+            // Handle error, possibly using mysqli_stmt_error($stmt)
+            return false;
+        }
         $result = mysqli_stmt_get_result($stmt);
-        // Check if there is a result.
-        return mysqli_fetch_assoc($result) > 0;
+        if (!$result) {
+            // Handle error, possibly using mysqli_error($this->connection)
+            return false;
+        }
+        return mysqli_fetch_assoc($result) !== null;
     }
+    
 
     // Updates a rating in the database.
     public function updateRating($ratingId, $username, $artist, $song, $rating) {
