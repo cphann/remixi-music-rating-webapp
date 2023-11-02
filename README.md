@@ -10,6 +10,19 @@ Below is the structure for each table:
 ![Users Table](images/users_table.png)
 ![Ratings Table](images/ratings_table.png)
 
+Our application is built on the Model-View-Controller (MVC) architecture, which organizes the code into three interconnected components:
+
+Model: Responsible for managing the data and business logic of the application. It communicates with the database to fetch, insert, update, and delete records.
+View: Provides the user interface which presents data to the user. In the context of a web application, views are often HTML templates with dynamic placeholders for data.
+Controller: Acts as an intermediary between the Model and View. It processes incoming requests, interacts with the Model, and selects a View to render the page.
+
+Our application provides a RESTful API, which complies with the principles of Representational State Transfer (REST) for communication between the client and the server. The key features are:
+
+Stateless Interactions: Each API request from client to server must contain all the information the server needs to understand the request, without relying on any stored context on the server.
+Resource-Based URLs: We expose our application's functionalities via URLs, such as /api/users or /api/ratings, representing resources in a structured format.
+HTTP Methods: Our API uses standard HTTP methods to perform CRUD operations: GET to retrieve data, POST to create new records, PUT or PATCH to update existing data, and DELETE to remove data.
+Response Codes: HTTP response codes are used to indicate the success or failure of an API request, with 200 series codes for success, 400 series for client errors, and 500 series for server errors.
+
 There is a frontend (remixi) and backend directory containing the following noteworthy files:
 remixi
     > src
