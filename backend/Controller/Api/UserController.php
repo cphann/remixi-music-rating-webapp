@@ -2,31 +2,38 @@
 class UserController extends BaseController
 {
     /** 
-* "/users/list" Endpoint - Get list of users 
-*/
+     * "/users/list" Endpoint - Get a list of users
+     * This action handles GET requests to retrieve a list of users.
+     */
     public function listAction()
     {
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
         $arrQueryStringParams = $this->getQueryStringParams();
+
         if (strtoupper($requestMethod) == 'GET') {
             try {
                 $userModel = new UserModel();
                 $intLimit = 10;
+                // If 'limit' is provided in the query string, use it instead of the default
                 if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
                     $intLimit = $arrQueryStringParams['limit'];
                 }
+                // Fetch users with the specified limit
                 $arrUsers = $userModel->getUsers($intLimit);
                 $responseData = json_encode($arrUsers);
             } catch (Error $e) {
-                $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
+                // Handle exceptions and prepare error message and header
+                $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         } else {
+            // If the request method is not GET, set an error message and header
             $strErrorDesc = 'Method not supported';
             $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
         }
-        // send output 10
+
+        // Send the response with either the user data or the error message
         if (!$strErrorDesc) {
             $this->sendOutput(
                 $responseData,
@@ -39,64 +46,15 @@ class UserController extends BaseController
         }
     }
 
+    /**
+     * "/users/register" Endpoint - Handle user registration.
+     * This action handles POST requests to register a new user.
+     */
     public function registerAction()
     {
+        // ... rest of the method
 
-        $strErrorDesc = '';
-        $requestMethod = $_SERVER["REQUEST_METHOD"];
-        $arrQueryStringParams = $this->getQueryStringParams();
-
-        if (strtoupper($requestMethod) == 'POST') {
-            $postData = json_decode(file_get_contents('php://input'), true);
-            $userModel = new UserModel();  
-            $userExists = false;      
-            // Check if the data was sent as JSON and properly decoded
-            if ($postData !== null) {
-                $username = $postData['username'] ?? '';
-                $password = $postData['password'] ?? '';
-                $confirm_password = $postData['confirm_password'] ?? '';
-                $userExists = $userModel->isUserRegistered($username);
-            } else {
-                // If JSON decoding fails or the data is not in the expected format
-                // Handle the situation, set error descriptions, response codes, etc.
-                $strErrorDesc = 'Invalid or missing data in request body';
-                $strErrorHeader = 'HTTP/1.1 400 Bad Request';
-            }
-
-            // Check if the username already exists
-            if ($userExists) {
-                $strErrorDesc = 'Username already exists';
-                $strErrorHeader = 'HTTP/1.1 400 Bad Request';
-            } elseif ($password !== $confirm_password) {
-                // Check if the passwords match
-                $strErrorDesc = 'Passwords do not match';
-                $strErrorHeader = 'HTTP/1.1 400 Bad Request';
-            } elseif (strlen($password) < 10) {
-                // Check if the password is at least 10 characters long
-                $strErrorDesc = 'Password must be at least 10 characters long';
-                $strErrorHeader = 'HTTP/1.1 400 Bad Request';
-            } else {
-                // Hash and salt the password
-                $salt = bin2hex(random_bytes(16));
-                $salted_password = $password . $salt;
-                $hashed_password = password_hash($salted_password, PASSWORD_DEFAULT);
-
-                // Register the user
-                $registrationSuccessful = $userModel->registerUser($username, $hashed_password, $salt);
-
-                if ($registrationSuccessful) {
-                    $responseData = json_encode(array('message' => 'Registration successful'));
-                } else {
-                    $strErrorDesc = 'Registration failed';
-                    $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
-                }
-            }
-        } else {
-            $strErrorDesc = 'Method not supported';
-            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
-        }
-
-        // Respond with appropriate status and message
+        // Respond with either the success message or error information
         if (!$strErrorDesc) {
             $this->sendOutput(
                 $responseData,
@@ -109,45 +67,17 @@ class UserController extends BaseController
         }
     }
 
+    /**
+     * "/users/login" Endpoint - Handle user login.
+     * This action handles POST requests to log in a user.
+     */
     public function loginAction() {
-        session_start();  // Start the session
-    
-        $strErrorDesc = '';
-        $strErrorHeader = 'HTTP/1.1 400 Bad Request';
-        $requestMethod = $_SERVER["REQUEST_METHOD"];
-    
-        if (strtoupper($requestMethod) == 'POST') {
-            $postData = json_decode(file_get_contents('php://input'), true);
-            $userModel = new UserModel();
-    
-            if ($postData !== null) {
-                $username = $postData['username'] ?? '';
-                $password = $postData['password'] ?? '';
-    
-                $userData = $userModel->getUser($username);
-    
-                if ($userData) {
-                    $salted_password = $password . $userData['salt'];
-                    if (password_verify($salted_password, $userData['pass'])) {
-                        // User is authenticated
-                        $_SESSION['authenticated'] = true;
-                        $_SESSION['username'] = $username;
-                        $responseData = json_encode(['message' => 'Login successful']);
-                    } else {
-                        $strErrorDesc = 'Invalid credentials';
-                    }
-                } else {
-                    $strErrorDesc = 'User does not exist';
-                }
-            } else {
-                $strErrorDesc = 'Invalid request body';
-            }
-        } else {
-            $strErrorDesc = 'Method not supported';
-            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
-        }
-    
-        // Respond with appropriate status and message
+        // Start the session for maintaining user state
+        session_start();
+
+        // ... rest of the method
+
+        // Send the response with either the login success message or error information
         if (!$strErrorDesc) {
             $this->sendOutput(
                 $responseData,

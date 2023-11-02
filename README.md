@@ -21,6 +21,7 @@ remixi
         > UpdateRating.js // Users use this when they click the update button to modify an existing rating
         > DeleteRating.js // Users use this when they click the delete button to remove a rating from the database
         > SearchRating.js // Users use this to search for ratings by artist, song, and min/max star ratings
+        > App.js // The root component that initializes the user session, handles routing, and provides the main structure of the webapp
 
 backend
     > Controller/Api
