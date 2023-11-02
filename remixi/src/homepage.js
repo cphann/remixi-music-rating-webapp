@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import DeleteRating from './DeleteRating';
 import UserContext from './UserContext';
+import UpdateRating from './UpdateRating';
 
 function HomePage() {
   const [ratings, setRatings] = useState([]);
@@ -58,7 +59,8 @@ function HomePage() {
             <td><Link to={`/view-rating/${rating.id}`}>View</Link></td> 
             {rating.username === username && ( // Check if the rating belongs to the logged-in user
               <td>
-                  <DeleteRating ratingId={rating.id} onDeleteSuccess={handleDeleteSuccess} />
+                <DeleteRating ratingId={rating.id} onDeleteSuccess={handleDeleteSuccess} />
+                <Link to={`/update-rating/${rating.id}`}>Update</Link>
               </td>
             )}
           </tr>
