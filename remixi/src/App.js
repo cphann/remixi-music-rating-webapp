@@ -5,6 +5,7 @@ import UserContext from './UserContext';
 import Signup from './Signup';
 import Login from './Login';
 import HomePage from './HomePage';
+import ViewRating from './ViewRating';
 import AddRating from './AddRating';
 
 function App() {
@@ -16,7 +17,6 @@ function App() {
         setUsername(user);
         localStorage.setItem('username', user); // save to localStorage
     };
-
     return (
         <UserContext.Provider value={{ username, setUserSession }}>
             <Router>
@@ -26,6 +26,17 @@ function App() {
                     showSignup={showSignup}
                     setShowSignup={setShowSignup}
                 />
+                <div className="App">
+                    <h1>Remixi Ratings App</h1>
+
+                    <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<Signup />} />
+                        <Route path="/add-rating" element={<AddRating />} />
+                        <Route path="/homepage" element={<HomePage />} />
+                        <Route path="/view-rating/:id" element={<ViewRating />} />
+                    </Routes>
+                </div>
             </Router>
         </UserContext.Provider>
     );

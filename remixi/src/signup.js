@@ -16,7 +16,7 @@ function SignUp() {
     }
 
     try {
-      const response = await axios.post('http://localhost/comp333_hw3/backend/index.php/user/register', {
+      const response = await axios.post('http://localhost:8080/comp333_hw3/backend/index.php/user/register', {
         username: username,
         password: password,
         confirm_password: confirmPassword,
