@@ -13,7 +13,7 @@ Below is the structure for each table:
 There is a frontend (remixi) and backend directory containing the following noteworthy files:
 remixi
     > src
-        > Signin.js // Users use this to create an account before logging into the app
+        > Signup.js // Users use this to create an account before logging into the app
         > Login.js // Users use this to log into the app once they have created an account
         > HomePage.js // The main page that encompasses all features of the rating webapp, viewable once the user is logged in
         > ViewRating.js // Users use this when they click the view button to see the details of a rating
