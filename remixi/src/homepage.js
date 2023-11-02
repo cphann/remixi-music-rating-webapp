@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import DeleteRating from './DeleteRating';
 import UserContext from './UserContext';
 import SearchRating from './SearchRating';
+import UpdateRating from './UpdateRating';
 
 function HomePage() {
   const [ratings, setRatings] = useState([]);
@@ -14,7 +15,7 @@ function HomePage() {
   // and can be called again later without being redefined.
   const fetchRatings = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost/comp333_hw3/backend/index.php/ratings/list?limit=100');
+      const response = await axios.get('http://localhost:8080/comp333_hw3/backend/index.php/ratings/list?limit=100');
       console.log("Backend response:", response.data);
       if (Array.isArray(response.data)) {
         setRatings(response.data);
@@ -60,7 +61,8 @@ function HomePage() {
             <td><Link to={`/view-rating/${rating.id}`}>View</Link></td> 
             {rating.username === username && ( // Check if the rating belongs to the logged-in user
               <td>
-                  <DeleteRating ratingId={rating.id} onDeleteSuccess={handleDeleteSuccess} />
+                <DeleteRating ratingId={rating.id} onDeleteSuccess={handleDeleteSuccess} />
+                <Link to={`/update-rating/${rating.id}`}>Update</Link>
               </td>
             )}
           </tr>

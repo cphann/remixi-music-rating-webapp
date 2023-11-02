@@ -36,8 +36,8 @@ class RatingModel extends Database
         
         return mysqli_stmt_affected_rows($stmt) > 0;
     }
-
-        public function searchRatings($artist = null, $song = null, $minRating = null, $maxRating = null) {
+  
+    public function searchRatings($artist = null, $song = null, $minRating = null, $maxRating = null) {
         $query = "SELECT * FROM ratings WHERE 1=1";
         $types = '';
         $params = [];
@@ -77,6 +77,23 @@ class RatingModel extends Database
             // If no conditions were added, no need for binding parameters
             return $this->select($query);
         }
+    }
+
+    public function getRatingByUserArtistSong($username, $artist, $song) {
+        $query = "SELECT * FROM ratings WHERE username = ? AND artist = ? AND song = ?";
+        $stmt = mysqli_prepare($this->connection, $query);
+        mysqli_stmt_bind_param($stmt, "sss", $username, $artist, $song);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        return mysqli_fetch_assoc($result);
+    }
+
+    public function updateRating($ratingId, $username, $artist, $song, $rating) {
+        $query = "UPDATE ratings SET username = ?, artist = ?, song = ?, rating = ? WHERE id = ?";
+        $stmt = mysqli_prepare($this->connection, $query);
+        mysqli_stmt_bind_param($stmt, "ssssi", $username, $artist, $song, $rating, $ratingId);
+        mysqli_stmt_execute($stmt);
+        return mysqli_stmt_affected_rows($stmt) > 0;
     }
 
 }

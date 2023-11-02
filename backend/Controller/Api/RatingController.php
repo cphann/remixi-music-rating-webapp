@@ -66,6 +66,42 @@ class RatingController extends BaseController
         }
     }
 
+    public function updateRatingAction() {
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+    
+        // Check if the request method is POST
+        if (strtoupper($requestMethod) !== 'POST') {
+            $this->sendOutput(json_encode(['error' => 'Method not supported']), ['Content-Type: application/json', 'HTTP/1.1 405 Method Not Allowed']);
+            return;
+        }
+
+        $postData = json_decode(file_get_contents('php://input'), true);
+
+        $ratingId = $_GET['id'] ?? null;
+
+        // Check if the rating ID is provided for updating a rating            
+        if (!$ratingId) {
+            $this->sendOutput(json_encode(['error' => 'Rating ID not provided']), ['Content-Type: application/json', 'HTTP/1.1 400 Bad Request']);
+            return;
+        }
+
+        $ratingModel = new RatingModel();
+        $existingRating = $ratingModel->getRatingById($ratingId);
+    
+        if ($existingRating) {
+            $success = $ratingModel->updateRating($ratingId, $postData['username'], $postData['artist'], $postData['song'], $postData['rating']);
+            if ($success) {
+                    $this->sendOutput(json_encode(['message' => 'Rating updated successfully']), ['Content-Type: application/json', 'HTTP/1.1 200 OK']);
+                } else {
+                    $this->sendOutput(json_encode(['error' => 'Failed to update rating or no changes made']), ['Content-Type: application/json', 'HTTP/1.1 500 Internal Server Error']);
+                }
+                //return;
+            } else {
+                $this->sendOutput(json_encode(['error' => 'Rating ID not found']), ['Content-Type: application/json', 'HTTP/1.1 404 Not Found']);
+                //return;
+            }
+    }
+
     public function addRatingAction() {
         $requestMethod = $_SERVER["REQUEST_METHOD"];
     
@@ -74,15 +110,24 @@ class RatingController extends BaseController
             $this->sendOutput(json_encode(['error' => 'Method not supported']), ['Content-Type: application/json', 'HTTP/1.1 405 Method Not Allowed']);
             return;
         }
-    
+
         $postData = json_decode(file_get_contents('php://input'), true);
-    
+
         if (!isset($postData['username']) || !isset($postData['artist']) || !isset($postData['song']) || !isset($postData['rating'])) {
             $this->sendOutput(json_encode(['error' => 'Missing required fields']), ['Content-Type: application/json', 'HTTP/1.1 400 Bad Request']);
             return;
         }
-    
+
         $ratingModel = new RatingModel();
+
+        $existingEntry = $ratingModel->getRatingByUserArtistSong($postData['username'], $postData['artist'], $postData['song']);
+    
+        // Check for an existing rating with the same user, artist, and song
+        if ($existingEntry) {
+            $this->sendOutput(json_encode(['error' => 'Rating already exists']), ['Content-Type: application/json', 'HTTP/1.1 409 Conflict']);
+            return;
+        }
+
         $success = $ratingModel->addRating($postData['username'], $postData['artist'], $postData['song'], $postData['rating']);
     
         if ($success) {

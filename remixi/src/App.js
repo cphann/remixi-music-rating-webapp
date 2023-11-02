@@ -8,6 +8,7 @@ import HomePage from './HomePage';
 import ViewRating from './ViewRating';
 import AddRating from './AddRating';
 import SearchRating from './SearchRating';
+import UpdateRating from './UpdateRating';
 
 function App() {
     const [username, setUsername] = useState(localStorage.getItem('username') || null);
@@ -28,6 +29,7 @@ function App() {
                         <Route path="/search" element={<SearchRating />} />
                         <Route path="/homepage" element={<HomePage />} />
                         <Route path="/view-rating/:id" element={<ViewRating />} />
+                        <Route path="/update-rating/:id" element={<UpdateRating />} />
                     </Routes>
             </Router>
         </UserContext.Provider>

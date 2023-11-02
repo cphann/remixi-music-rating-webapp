@@ -19,15 +19,15 @@ export default function AddRating() {
         event.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost/comp333_hw3/backend/index.php/ratings/addRating', {
+            const response = await axios.post('http://localhost:8080/comp333_hw3/backend/index.php/ratings/addRating', {
                 username,
                 artist,
                 song,
                 rating
             });
-            navigate('/homepage');
-            // Handle success
             setMessage(response.data.message || 'Rating submitted successfully!');
+            alert('Rating added successfully');
+            navigate('/homepage');
         } catch (error) {
             // Handle error
             setMessage(error.response?.data.error || 'An error occurred while submitting the rating.');
