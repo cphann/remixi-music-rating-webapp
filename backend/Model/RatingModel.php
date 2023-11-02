@@ -1,99 +1,114 @@
 <?php
+
 require_once PROJECT_ROOT_PATH . "/Model/Database.php";
+
+// Define a RatingModel class that extends the Database class to interact with the ratings data.
 class RatingModel extends Database
 {
+    // Retrieves a limited list of ratings from the database.
     public function getRatings($limit)
     {
+        // Perform a database query to select all ratings with a limit and return the results.
         return $this->select("SELECT * FROM ratings ORDER BY id ASC LIMIT ?", "i", [$limit]);
     }
 
+    // Retrieves a single rating by its ID.
     public function getRatingById($ratingId)
     {
+        // Prepare the SQL query to select a rating by ID.
         $query = "SELECT * FROM ratings WHERE id = ?";
         $stmt = mysqli_prepare($this->connection, $query);
         mysqli_stmt_bind_param($stmt, "i", $ratingId);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
+        // Fetch the result as an associative array.
         $rating = mysqli_fetch_assoc($result);
         return $rating;
     }
 
+    // Inserts a new rating into the database.
     public function addRating($username, $artist, $song, $rating) {
+        // Prepare an SQL statement to insert a new rating.
         $query = "INSERT INTO ratings (username, artist, song, rating) VALUES (?, ?, ?, ?)";
         $stmt = mysqli_prepare($this->connection, $query);
         mysqli_stmt_bind_param($stmt, "sssi", $username, $artist, $song, $rating);
         mysqli_stmt_execute($stmt);
+        // Check if the insertion was successful.
         return mysqli_stmt_affected_rows($stmt) > 0;
     }
 
+    // Deletes a rating from the database.
     public function deleteRating($ratingId, $username) {
-
-        // Delete the rating
+        // Prepare an SQL statement to delete a rating by ID and username.
         $query = "DELETE FROM ratings WHERE id = ? AND username = ?";
         $stmt = mysqli_prepare($this->connection, $query);
         mysqli_stmt_bind_param($stmt, "is", $ratingId, $username);
         mysqli_stmt_execute($stmt);
-        
+        // Check if the deletion was successful.
         return mysqli_stmt_affected_rows($stmt) > 0;
     }
   
+    // Searches ratings based on provided criteria.
     public function searchRatings($artist = null, $song = null, $minRating = null, $maxRating = null) {
+        // Start with a base SQL query.
         $query = "SELECT * FROM ratings WHERE 1=1";
         $types = '';
         $params = [];
 
-        // Check if artist is provided and not empty
+        // Add conditions for artist name if provided.
         if ($artist !== null && $artist !== '') {
             $query .= " AND artist LIKE ?";
             $types .= 's'; // string type
             $params[] = $artist;
         }
 
-        // Check if song is provided and not empty
+        // Add conditions for song name if provided.
         if ($song !== null && $song !== '') {
             $query .= " AND song LIKE ?";
             $types .= 's';
             $params[] = $song;
         }
 
-        // Check if minRating is provided and is a number
+        // Add conditions for minimum rating if provided.
         if ($minRating !== null && is_numeric($minRating)) {
             $query .= " AND rating >= ?";
             $types .= 'i'; // integer type
             $params[] = $minRating;
         }
 
-        // Check if maxRating is provided and is a number
+        // Add conditions for maximum rating if provided.
         if ($maxRating !== null && is_numeric($maxRating)) {
             $query .= " AND rating <= ?";
             $types .= 'i';
             $params[] = $maxRating;
         }
 
-        // Bind the parameters if any conditions were added
-        if ($types) {
-            return $this->select($query, $types, $params);
-        } else {
-            // If no conditions were added, no need for binding parameters
-            return $this->select($query);
-        }
+        // Execute the query with the parameters if any were added.
+        return $types ? $this->select($query, $types, $params) : $this->select($query);
     }
 
+    // Retrieves a rating by username, artist, and song combination.
     public function getRatingByUserArtistSong($username, $artist, $song) {
+        // Prepare the SQL query to select a rating based on username, artist, and song.
         $query = "SELECT * FROM ratings WHERE username = ? AND artist = ? AND song = ?";
         $stmt = mysqli_prepare($this->connection, $query);
         mysqli_stmt_bind_param($stmt, "sss", $username, $artist, $song);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
+        // Check if there is a result.
         return mysqli_fetch_assoc($result) > 0;
     }
 
+    // Updates a rating in the database.
     public function updateRating($ratingId, $username, $artist, $song, $rating) {
+        // Prepare an SQL statement to update an existing rating.
         $query = "UPDATE ratings SET username = ?, artist = ?, song = ?, rating = ? WHERE id = ?";
         $stmt = mysqli_prepare($this->connection, $query);
         mysqli_stmt_bind_param($stmt, "ssssi", $username, $artist, $song, $rating, $ratingId);
         mysqli_stmt_execute($stmt);
+        // Check if the update was successful.
         return mysqli_stmt_affected_rows($stmt) > 0;
     }
 
 }
+?>

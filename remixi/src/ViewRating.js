@@ -16,7 +16,7 @@ function ViewRating() {
     const fetchRating = async () => {
         try {
             console.log("Fetching rating for ID:", id); // debug log
-            const response = await axios.get(`http://localhost/comp333_hw3/backend/index.php/ratings/view?id=${id}`);
+            const response = await axios.get(`http://localhost:8080/comp333_hw3/backend/index.php/ratings/view?id=${id}`);
             console.log("Response data:", response.data); // debug log
             if (response.data && response.data.id) {
                 setRating(response.data);
