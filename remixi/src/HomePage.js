@@ -1,50 +1,50 @@
-import React, { useState, useEffect, useContext, useCallback   } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import DeleteRating from './DeleteRating';
-import UserContext from './UserContext';
-import UpdateRating from './UpdateRating';
+import DeleteRating from './DeleteRating'; // Component for deleting a rating
+import UserContext from './UserContext'; // Context to access the user information
+import UpdateRating from './UpdateRating'; // Component for updating a rating
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons"; // Import the star icon
+import { faStar, faEdit } from "@fortawesome/free-solid-svg-icons"; // Icons for UI actions
 
 function HomePage() {
-  const [ratings, setRatings] = useState([]);
-  const { username } = useContext(UserContext);
-  //const loggedInUser = localStorage.getItem('username');  // Assuming the logged-in username is stored in local storage
+  const [ratings, setRatings] = useState([]); // State to hold the ratings data
+  const { username } = useContext(UserContext); // Username from the global context
 
-  // This function is now a `useCallback` hook, which will be memoized
-  // and can be called again later without being redefined.
+  // useCallback is used to memoize the fetchRatings function so it's not recreated on every render
   const fetchRatings = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:8080/comp333_hw3/backend/index.php/ratings/list?limit=100');
+      // GET request to fetch ratings from the backend, limited to 100 items
+      const response = await axios.get('http://localhost/comp333_hw3/backend/index.php/ratings/list?limit=100');
       console.log("Backend response:", response.data);
+      // Check if the response data is an array (as expected)
       if (Array.isArray(response.data)) {
-        setRatings(response.data);
+        setRatings(response.data); // Update state with fetched ratings
       } else {
         console.error("Received non-array data from backend:", response.data);
       }
     } catch (error) {
       console.error("Error fetching ratings:", error);
     }
-  }, []); // Empty dependency array means this function is created only once
+  }, []); // Dependencies are empty, meaning this will only be created once
 
-  // Initial fetch of ratings when the component is mounted
   useEffect(() => {
-    fetchRatings();
-  }, [fetchRatings]);
+    fetchRatings(); // Fetch ratings when the component is mounted
+  }, [fetchRatings]); // Depend on the memoized function
 
-  // Function to be passed to DeleteRating to allow it to trigger a refresh
+  // Function to refresh the ratings list after a successful delete
   const handleDeleteSuccess = useCallback(() => {
-    fetchRatings(); // Refetch ratings after a delete
+    fetchRatings(); // Re-fetch the ratings
   }, [fetchRatings]);
 
+  // Function to render star icons based on the rating value
   function renderRatingStars(rating) {
     const starIcons = [];
-  
     for (let i = 1; i <= rating; i++) {
       starIcons.push(
         <FontAwesomeIcon
-          icon={faStar} // Use the star icon from FontAwesome
+          key={i} // Unique key for each star icon
+          icon={faStar} // Star icon for ratings
           style={{color: "#7ec0dd",}} 
         />
       );
@@ -52,13 +52,13 @@ function HomePage() {
     return starIcons;
   }
 
-
+  // JSX for rendering the homepage
   return (
     <div>
       <h2>Home Page</h2>
-      {username && <p>Welcome, {username}!</p>} {/* Display the logged-in user's name */}
-      <p><Link to="/add-rating">Add Rating</Link></p>
-      <p><Link to="/search">Search</Link></p>
+      {username && <p>Welcome, {username}!</p>} // Greet the logged-in user
+      <p><Link to="/add-rating">Add Rating</Link></p> // Link to add a new rating
+      <p><Link to="/search">Search</Link></p> // Link to the search page
       <table>
       <thead>
         <tr>
@@ -66,22 +66,24 @@ function HomePage() {
           <th>Artist</th>
           <th>Song</th>
           <th>Rating</th>
+          // Table headers
         </tr>
       </thead>
       <tbody>
         {Array.isArray(ratings) && ratings.map((rating) => (
+          // Map through each rating to create table rows
           <tr key={rating.id}>
             <td>{rating.id}</td>
             <td>{rating.artist}</td>
             <td>{rating.song}</td>
-            <td>{renderRatingStars(rating.rating)}</td>
-            <td><Link to={`/view-rating/${rating.id}`}>View</Link></td> 
-            {rating.username === username && ( // Check if the rating belongs to the logged-in user
+            <td>{renderRatingStars(rating.rating)}</td> // Display star icons for rating
+            <td><Link to={`/view-rating/${rating.id}`}>View</Link></td> // Link to view rating details
+            {rating.username === username && ( // Only show update/delete if rating belongs to user
               <td>
                 <Link to={`/update-rating/${rating.id}`}>Update</Link>
-                <DeleteRating ratingId={rating.id} onDeleteSuccess={handleDeleteSuccess} />
+                <DeleteRating ratingId={rating.id} onDeleteSuccess={handleDeleteSuccess} /> // Delete button
                 <Link to={`/update-rating/${rating.id}`}>
-                    <FontAwesomeIcon icon={faEdit} style={{color: "#7ec0dd",}}/> {/* Delete icon */}
+                    <FontAwesomeIcon icon={faEdit} style={{color: "#7ec0dd",}}/> // Edit icon
                 </Link>
               </td>
             )}
