@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Logout from './Logout';
+import { Link } from 'react-router-dom';
 //import DeleteRating from './DeleteRating';
 //import UpdateRating from './UpdateRating';
 /* add after each rating if user logged in made rating
@@ -34,7 +36,9 @@ function HomePage() {
 
   return (
     <div>
+      <Logout />
       <h2>Home Page</h2>
+      <Link to="/add-rating">Add Rating</Link>
       <table>
       <thead>
         <tr>
