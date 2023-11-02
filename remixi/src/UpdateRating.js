@@ -22,7 +22,7 @@ const UpdateRating = ({ match }) => {
         const fetchRating = async () => {
             try {
                 // Assuming 'getRatingById' is a dedicated GET endpoint for fetching rating details
-                const response = await axios.get(`http://localhost:8080/comp333_hw3/backend/index.php/ratings/view?id=${id}`);
+                const response = await axios.get(`http://localhost/comp333_hw3/backend/index.php/ratings/view?id=${id}`);
                 setRating(response.data);
             } catch (error) {
                 if (error.response) {
@@ -50,7 +50,7 @@ const UpdateRating = ({ match }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:8080/comp333_hw3/backend/index.php/ratings/updateRating?id=${id}`, rating);
+            const response = await axios.post(`http://localhost/comp333_hw3/backend/index.php/ratings/updateRating?id=${id}`, rating);
             if (response.data.message) {
                 alert('Rating updated successfully');
                 navigate('/homepage');
@@ -71,7 +71,7 @@ const UpdateRating = ({ match }) => {
                 {/* Form fields prepopulated with the existing rating */}
                 <input type="text" name="artist" value={rating.artist} onChange={handleInputChange} required /> <br/>
                 <input type="text" name="song" value={rating.song} onChange={handleInputChange} required /> <br/>
-                <input type="number" name="rating" value={rating.rating} onChange={handleInputChange} required /> <br/>
+                <input type="number" name="rating" value={rating.rating} onChange={handleInputChange} min="1" max="5" required /> <br/>
                 <button type="submit">Update</button>
             </form>
             {errorMessage && <p>{errorMessage}</p>}

@@ -16,7 +16,7 @@ function HomePage() {
   // and can be called again later without being redefined.
   const fetchRatings = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:8080/comp333_hw3/backend/index.php/ratings/list?limit=100');
+      const response = await axios.get('http://localhost/comp333_hw3/backend/index.php/ratings/list?limit=100');
       console.log("Backend response:", response.data);
       if (Array.isArray(response.data)) {
         setRatings(response.data);
@@ -57,7 +57,8 @@ function HomePage() {
     <div>
       <h2>Home Page</h2>
       {username && <p>Welcome, {username}!</p>} {/* Display the logged-in user's name */}
-      <Link to="/add-rating">Add Rating</Link>
+      <p><Link to="/add-rating">Add Rating</Link></p>
+      <p><Link to="/search">Search</Link></p>
       <table>
       <thead>
         <tr>
@@ -77,6 +78,7 @@ function HomePage() {
             <td><Link to={`/view-rating/${rating.id}`}>View</Link></td> 
             {rating.username === username && ( // Check if the rating belongs to the logged-in user
               <td>
+                <Link to={`/update-rating/${rating.id}`}>Update</Link>
                 <DeleteRating ratingId={rating.id} onDeleteSuccess={handleDeleteSuccess} />
                 <Link to={`/update-rating/${rating.id}`}>
                     <FontAwesomeIcon icon={faEdit} style={{color: "#7ec0dd",}}/> {/* Delete icon */}

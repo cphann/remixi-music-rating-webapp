@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function ViewRating() {
   const [rating, setRating] = useState(null);
   const { id } = useParams(); // Get the rating ID from the URL
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate('/homepage');
+  };
 
   useEffect(() => {
     const fetchRating = async () => {
         try {
             console.log("Fetching rating for ID:", id); // debug log
-            const response = await axios.get(`http://localhost:8080/comp333_hw3/backend/index.php/ratings/view?id=${id}`);
+            const response = await axios.get(`http://localhost/comp333_hw3/backend/index.php/ratings/view?id=${id}`);
             console.log("Response data:", response.data); // debug log
             if (response.data && response.data.id) {
                 setRating(response.data);
@@ -36,6 +42,7 @@ function ViewRating() {
           <p><strong>Rating:</strong> {rating.rating}</p>
         </>
       )}
+      <p><button type="button" onClick={handleBack}>Back to Home</button></p>
     </div>
   );
 }
