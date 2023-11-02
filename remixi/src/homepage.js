@@ -56,9 +56,9 @@ function HomePage() {
   return (
     <div>
       <h2>Home Page</h2>
-      {username && <p>Welcome, {username}!</p>} // Greet the logged-in user
-      <p><Link to="/add-rating">Add Rating</Link></p> // Link to add a new rating
-      <p><Link to="/search">Search</Link></p> // Link to the search page
+      {username && <p>Welcome, {username}!</p>}
+      <p><Link to="/add-rating">Add Rating</Link></p>
+      <p><Link to="/search">Search</Link></p>
       <table>
       <thead>
         <tr>
@@ -66,7 +66,6 @@ function HomePage() {
           <th>Artist</th>
           <th>Song</th>
           <th>Rating</th>
-          // Table headers
         </tr>
       </thead>
       <tbody>
@@ -76,14 +75,14 @@ function HomePage() {
             <td>{rating.id}</td>
             <td>{rating.artist}</td>
             <td>{rating.song}</td>
-            <td>{renderRatingStars(rating.rating)}</td> // Display star icons for rating
-            <td><Link to={`/view-rating/${rating.id}`}>View</Link></td> // Link to view rating details
-            {rating.username === username && ( // Only show update/delete if rating belongs to user
+            <td>{renderRatingStars(rating.rating)}</td>
+            <td><Link to={`/view-rating/${rating.id}`}>View</Link></td>
+            {rating.username === username && (
               <td>
                 <Link to={`/update-rating/${rating.id}`}>Update</Link>
-                <DeleteRating ratingId={rating.id} onDeleteSuccess={handleDeleteSuccess} /> // Delete button
+                <DeleteRating ratingId={rating.id} onDeleteSuccess={handleDeleteSuccess} />
                 <Link to={`/update-rating/${rating.id}`}>
-                    <FontAwesomeIcon icon={faEdit} style={{color: "#7ec0dd",}}/> // Edit icon
+                    <FontAwesomeIcon icon={faEdit} style={{color: "#7ec0dd",}}/>
                 </Link>
               </td>
             )}
