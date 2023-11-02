@@ -80,7 +80,7 @@ function SearchRating() {
           value={search.minRating}
           onChange={handleChange}
           min="1"
-          max="5.0000000000"
+          max="5"
         />
         <input
           type="number"
@@ -89,7 +89,7 @@ function SearchRating() {
           value={search.maxRating}
           onChange={handleChange}
           min="1"
-          max="5.0000000000"
+          max="5"
         />
         {/* Button to submit the search form */}
         <button type="submit">Search</button>

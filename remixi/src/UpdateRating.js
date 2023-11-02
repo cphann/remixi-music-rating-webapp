@@ -80,8 +80,8 @@ const UpdateRating = ({ match }) => {
                 <input type="number" name="rating" value={rating.rating} onChange={handleInputChange} min="1" max="5" required /><br/>
                 <button type="submit">Update</button>
             </form>
-            {errorMessage && <p>{errorMessage}</p>}
-            <button onClick={handleCancel}>Cancel</button>
+            {errorMessage && <p>{errorMessage}</p>} // Display any error messages
+            <button onClick={handleCancel}>Cancel</button> // Button to cancel the update and go back
         </div>
         
     );

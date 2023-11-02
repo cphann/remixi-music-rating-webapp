@@ -23,9 +23,9 @@ function App() {
     // UserContext.Provider provides the context to the component tree
     return (
         <UserContext.Provider value={{ username, setUserSession }}>
-            <Router>
-                <AppContent />
-                <Routes>
+            <Router> // Using HashRouter for routing
+                <AppContent /> // Component that contains the main content and navigation
+                <Routes> // Route configuration for the app
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/add-rating" element={<AddRating />} />
