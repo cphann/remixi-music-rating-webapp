@@ -93,7 +93,7 @@ class RatingController extends BaseController
             if ($success) {
                     $this->sendOutput(json_encode(['message' => 'Rating updated successfully']), ['Content-Type: application/json', 'HTTP/1.1 200 OK']);
                 } else {
-                    $this->sendOutput(json_encode(['error' => 'Failed to update rating']), ['Content-Type: application/json', 'HTTP/1.1 500 Internal Server Error']);
+                    $this->sendOutput(json_encode(['error' => 'Failed to update rating or no changes made']), ['Content-Type: application/json', 'HTTP/1.1 500 Internal Server Error']);
                 }
                 //return;
             } else {

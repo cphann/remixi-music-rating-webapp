@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import UserContext from './UserContext';
 import Signup from './Signup';
-import Login from './Login';
+import Login from './login';
 import HomePage from './HomePage';
 import ViewRating from './ViewRating';
 import AddRating from './AddRating';
+import UpdateRating from './UpdateRating'
 import { Link } from 'react-router-dom';
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
                         <Route path="/add-rating" element={<AddRating />} />
                         <Route path="/homepage" element={<HomePage />} />
                         <Route path="/view-rating/:id" element={<ViewRating />} />
+                        <Route path="/update-rating/:id" element={<UpdateRating />} />
                     </Routes>
                 </div>
             </Router>
