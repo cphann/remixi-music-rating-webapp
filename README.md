@@ -34,7 +34,7 @@ backend
     > index.php // Front controller that routes incoming HTTP requests to the appropriate controller actions
 
 
-Important Note: the HomePage.js, Login.js, and Signup.js files may not be named correctly when first cloning the repository, please edit them to the above stated capitalization for App.js to work
+Important Note: the HomePage.js, Login.js, and Signup.js files may not be named correctly when first cloning the repository, please edit them to the above stated capitalization for App.js to work. We tried to change it many times.
 
 How to run the file locally: First, start your MySQL Database and Apache Web Server in XAMPP. Copy the repository into htdocs. Then, run in the remixi folder by entering 'npm start', edit paths as necessary for your local host
 
