@@ -35,7 +35,7 @@ export default function Login () {
     };
 
     return (
-        <div>
+            <div>
             <h2>Login</h2>
             <form onSubmit={handleLogin}>
                 <div>
@@ -57,11 +57,10 @@ export default function Login () {
                 />
                 </div>
                 <div>
-                <button type="submit">Login</button>
+                <button type="submit">Sign In</button>
                 </div>
             </form>
-
             {errorMessage && <p>{errorMessage}</p>}
-        </div>
+            </div>
     );
 };

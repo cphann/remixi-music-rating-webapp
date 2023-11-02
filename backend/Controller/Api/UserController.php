@@ -161,4 +161,44 @@ class UserController extends BaseController
         }
     }
 
+    public function logoutAction() {
+        session_start();
+
+        $strErrorDesc = '';
+        $strErrorHeader = 'HTTP/1.1 400 Bad Request';
+
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+
+        error_log(print_r($_SESSION, true));
+        if (strtoupper($requestMethod) == 'POST') {
+            if (isset($_SESSION['authenticated']) && $_SESSION['authenticated'] === true) {
+                // Clear the authentication session variables
+                $_SESSION['authenticated'] = false;
+                unset($_SESSION['username']);
+
+                // Destroy the session
+                session_destroy();
+
+                $responseData = json_encode(['message' => 'Logout successful']);
+            } else {
+                $strErrorDesc = 'User is not logged in';
+            }
+        } else {
+            $strErrorDesc = 'Method not supported';
+            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+        }
+
+        // Respond with appropriate status and message
+        if (!$strErrorDesc) {
+            $this->sendOutput(
+                $responseData,
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
+        } else {
+            $this->sendOutput(
+                json_encode(array('error' => $strErrorDesc)),
+                array('Content-Type: application/json', $strErrorHeader)
+            );
+        }
+    }
 }

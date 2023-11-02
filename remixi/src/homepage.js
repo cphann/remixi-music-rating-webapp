@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback   } from 'react';
 import axios from 'axios';
+import Logout from './Logout';
 import { Link } from 'react-router-dom';
 import DeleteRating from './DeleteRating';
 import UserContext from './UserContext';
@@ -46,7 +47,9 @@ function HomePage() {
 
   return (
     <div>
+      <Logout />
       <h2>Home Page</h2>
+      <Link to="/add-rating">Add Rating</Link>
       <table>
       <thead>
         <tr>
