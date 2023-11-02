@@ -1,33 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom'; // Used for accessing URL parameters
-import { useNavigate } from 'react-router-dom'; // Used for programmatic navigation
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const UpdateRating = ({ match }) => {
     const [rating, setRating] = useState({
-        username: '', // Holds the username of the user who made the rating
-        artist: '',   // Holds the artist's name of the rating
-        song: '',     // Holds the song title of the rating
-        rating: ''    // Holds the rating value
+        username: '',
+        artist: '',
+        song: '',
+        rating: ''
     });
-    const [errorMessage, setErrorMessage] = useState(''); // Stores error messages
-    const { id } = useParams(); // Retrieves the 'id' URL parameter
-    const navigate = useNavigate(); // Hook to allow navigation to different routes
+    const [errorMessage, setErrorMessage] = useState('');
+    const { id } = useParams();
+    const navigate = useNavigate();
     
-    // Function to navigate back to the homepage
     const handleCancel = () => {
         navigate('/homepage');
     };
-    
-    // UseEffect hook to load rating data when the component mounts or when 'id' changes
     useEffect(() => {
+        // Fetch the existing rating details to prepopulate the form
         const fetchRating = async () => {
             try {
-                // Make a GET request to retrieve the rating by ID
+                // Assuming 'getRatingById' is a dedicated GET endpoint for fetching rating details
                 const response = await axios.get(`http://localhost/comp333_hw3/backend/index.php/ratings/view?id=${id}`);
-                setRating(response.data); // Update the state with the fetched rating data
+                setRating(response.data);
             } catch (error) {
-                // Handle errors by setting the appropriate error message
                 if (error.response) {
                     setErrorMessage(error.response.data.error);
                 } else {
@@ -37,30 +34,28 @@ const UpdateRating = ({ match }) => {
         };
     
         fetchRating();
-    }, [id]); // Dependency array with 'id' ensures effect runs when 'id' changes
+    }, [id]);
     
 
-    // Handles form input changes by updating the corresponding state
+    //updates the component's state whenever a user makes changes to any of the form fields
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setRating({
             ...rating,
-            [name]: value // Update the specific property with the new value
+            [name]: value
         });
     };
 
-    // Handles the form submission event
+    //sends the updated data to the backend when the form is submitted.
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevents the default form submission behavior
+        e.preventDefault();
         try {
-            // Sends a POST request to the update endpoint with the updated rating data
             const response = await axios.post(`http://localhost/comp333_hw3/backend/index.php/ratings/updateRating?id=${id}`, rating);
             if (response.data.message) {
-                alert('Rating updated successfully'); // Show success message
-                navigate('/homepage'); // Redirect user to the homepage
+                alert('Rating updated successfully');
+                navigate('/homepage');
             }
         } catch (error) {
-            // Handle errors that occur during the POST request
             if (error.response) {
                 setErrorMessage(error.response.data.error);
             } else {
@@ -69,19 +64,18 @@ const UpdateRating = ({ match }) => {
         }
     };
 
-    // JSX to render the Update Rating form
     return (
         <div>
             <h2>Update Rating</h2>
             <form onSubmit={handleSubmit}>
-                {/* Input fields prepopulated with the existing rating data */}
-                <input type="text" name="artist" value={rating.artist} onChange={handleInputChange} required /><br/>
-                <input type="text" name="song" value={rating.song} onChange={handleInputChange} required /><br/>
-                <input type="number" name="rating" value={rating.rating} onChange={handleInputChange} min="1" max="5" required /><br/>
+                {/* Form fields prepopulated with the existing rating */}
+                <input type="text" name="artist" value={rating.artist} onChange={handleInputChange} required /> <br/>
+                <input type="text" name="song" value={rating.song} onChange={handleInputChange} required /> <br/>
+                <input type="number" name="rating" value={rating.rating} onChange={handleInputChange} min="1" max="5" required /> <br/>
                 <button type="submit">Update</button>
             </form>
-            {errorMessage && <p>{errorMessage}</p>} // Display any error messages
-            <button onClick={handleCancel}>Cancel</button> // Button to cancel the update and go back
+            {errorMessage && <p>{errorMessage}</p>}
+            <button onClick={handleCancel}>Cancel</button>
         </div>
         
     );
