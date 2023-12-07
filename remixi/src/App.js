@@ -10,7 +10,7 @@ import AddRating from './AddRating';
 import SearchRating from './SearchRating';
 import UpdateRating from './UpdateRating';
 
-function App() {
+function App({ router: Router = HashRouter }) {
     const [username, setUsername] = useState(localStorage.getItem('username') || null);
     
     const setUserSession = (user) => {

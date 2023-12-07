@@ -29,7 +29,7 @@ export default function Login () {
             if (error.response) {
                 setErrorMessage(error.response.data.error);
             } else {
-                setErrorMessage("An error occurred while trying to log in.");
+                setErrorMessage("Invalid credentials");
             }
         }
     };
