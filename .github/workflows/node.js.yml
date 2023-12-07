@@ -27,5 +27,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+      working-directory: remixi
     - run: npm run build --if-present
+      working-directory: remixi
     - run: npm test
+      working-directory: remixi
