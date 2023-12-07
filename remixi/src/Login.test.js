@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { BrowserRouter } from 'react-router-dom';
 import Login from './Login';
@@ -42,6 +43,26 @@ describe('Login Component', () => {
 
         const passwordInput = screen.getByPlaceholderText('Password');
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
+        expect(passwordInput.value).toBe('password123');
+    });
+
+    it('allows the user to type into the username and password fields using keyboard events', async () => {
+        render(
+            <BrowserRouter>
+                <Login />
+            </BrowserRouter>
+        );
+
+        // Get the input fields
+        const usernameInput = screen.getByPlaceholderText('Username');
+        const passwordInput = screen.getByPlaceholderText('Password');
+
+        // Simulate typing into the username and password inputs
+        await userEvent.type(usernameInput, 'testuser');
+        await userEvent.type(passwordInput, 'password123');
+
+        // Assert that the input fields have the expected values
+        expect(usernameInput.value).toBe('testuser');
         expect(passwordInput.value).toBe('password123');
     });
 
