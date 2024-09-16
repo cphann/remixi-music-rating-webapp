@@ -58,8 +58,10 @@ remixi/
     ├── UpdateRating.js   // Update an existing rating
     ├── DeleteRating.js   // Delete a rating from the database
     └── SearchRating.js   // Search for ratings by artist, song, and rating range
+```
 
 ### Backend (`backend`)
+```plaintext
 backend/
 └── Controller/Api/
     ├── BaseController.php  // Base controller for common functionality
@@ -72,6 +74,7 @@ backend/
     └── UserModel.php    // Methods to manage the user data
 
 └── index.php           // Front controller, routes incoming requests to appropriate controllers
+```
 
 ## Setup and Installation
 
@@ -86,12 +89,15 @@ backend/
 3. Navigate to the `remixi` folder for the frontend:
    ```bash
    cd remixi
+   ```
 4. To install dependencies:
 ```bash
 npm install
+```
 5. Start the frontend application:
 ```bash
 npm start
+```
 
 ###Important Notes
 Files like HomePage.js, Login.js, and Signup.js may have incorrect capitalization when cloned. Ensure these filenames match the capitalization shown above for App.js to work properly.
