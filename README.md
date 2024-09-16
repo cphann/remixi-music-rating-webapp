@@ -1,6 +1,6 @@
 # Remixi Music Rating WebApp
 
-### By: Chi Phan and Nagena Latifi
+#### By: Chi Phan and Nagena Latifi
 
 This repository implements the PHP/MySQL backend for our K-Pop music rating web app via a REST API, and connects it to a JavaScript/React frontend. 
 
@@ -87,10 +87,10 @@ backend/
 1. Start your MySQL Database and Apache Web Server using XAMPP.
 2. Copy the repository into the `htdocs` directory within XAMPP.
 3. Navigate to the `remixi` folder for the frontend:
-   ```bash
-   cd remixi
-   ```
-4. To install dependencies:
+```bash
+cd remixi
+```
+5. To install dependencies:
 ```bash
 npm install
 ```
@@ -99,6 +99,6 @@ npm install
 npm start
 ```
 
-###Important Notes
+### Important Notes:
 Files like HomePage.js, Login.js, and Signup.js may have incorrect capitalization when cloned. Ensure these filenames match the capitalization shown above for App.js to work properly.
 
