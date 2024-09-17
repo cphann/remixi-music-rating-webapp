@@ -15,7 +15,7 @@ This repository implements the PHP/MySQL backend for our K-Pop music rating web 
 
 ## Features
 The application allows users to:
--Sign up and login/logout with authentication using PHPSESSID tokens, with authentication implemented to prevent SQL injection.
+- Sign up and login/logout with authentication using PHPSESSID tokens, with authentication implemented to prevent SQL injection.
 - View, add, update, and delete song ratings (including title, artist, and rating).
 - Search through existing ratings for specific artists and/or songs and filter by minimum and/or maximum star ratings.
 
